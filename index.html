@@ -8,14 +8,14 @@
 
 <style>
 :root{
-  --bg:#f4f6f8;
+  --bg:#0b1c2d;
   --card:#ffffff;
   --text:#1f2328;
   --muted:#667085;
   --line:#e6e8eb;
   --accent:#2f6feb;   /* professional blue */
   --accent2:#111827;  /* dark */
-  --shadow: 0 10px 30px rgba(16,24,40,.08);
+  --shadow: 0 10px 30px rgba(11,28,45,.85);
   --radius: 14px;
 }
 
@@ -82,6 +82,19 @@ body{
 .nav-links{
   display:flex; gap:4px; align-items:center; overflow:auto;
 }
+.nav a,
+.brand b{
+  color:#fff;
+}
+
+.brand span{
+  color:#9fb3c8;
+}
+
+.nav a:hover{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}  
 
 /* cards */
 .card{
@@ -285,29 +298,36 @@ li{margin:6px 0}
   border:1px solid var(--line);
   background:#fff;
 }
-
-.icon-btn{
-  width:42px; height:42px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:#fff;
+.linkedin-icon{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  transition:.15s ease;
-  text-decoration:none;
+  width:48px;
+  height:48px;
 }
+
+.linkedin-icon img{
+  width:32px;
+  height:32px;
+}
+
+.linkedin-icon:hover{
+  transform: translateY(-1px);
+}
+
 .icon-btn:hover{
   transform: translateY(-1px);
   box-shadow:0 10px 25px rgba(16,24,40,.10);
 }
-.icon-btn img{
-  width:22px;height:22px;
-  object-fit:contain;
-}
-
 @media (max-width: 520px){
   .profile-photo{width:76px;height:76px;}
+}
+.nav-avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--line);
 }
 </style>
 </head>
@@ -318,7 +338,7 @@ li{margin:6px 0}
 <div class="nav">
   <div class="nav-inner">
     <div class="brand">
-      <span class="avatar" aria-hidden="true"></span>
+      <img class="nav-avatar" src="assets/images/profile.jpg" alt="Kuan-Yi Li">
       <div>
         <b>Kuan-Yi Li</b>
         <span>Digital IC Design Engineer</span>
@@ -360,7 +380,7 @@ li{margin:6px 0}
       </div>
 
       <div class="actions">
-        <a class="icon-btn"
+        <a class="linkedin-icon"
            href="https://www.linkedin.com/in/simon-li-014084275/"
            target="_blank" rel="noreferrer" aria-label="LinkedIn">
           <img src="assert/images/linkedin.png" alt="LinkedIn">
