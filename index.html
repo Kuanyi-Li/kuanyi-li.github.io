@@ -160,6 +160,10 @@ h1{
   margin:0;
   font-size: 15px;
 }
+.hero .subtitle{
+  color:#111827;
+  opacity:.9;
+}
 .badges{
   display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
 }
@@ -463,6 +467,31 @@ li{margin:6px 0}
     line-height: 1.15;
   }
 }
+/* Prevent cards overflow on mobile */
+.pcard, .pgrid, .kv{
+  max-width:100%;
+}
+
+.pgrid{
+  min-width:0;
+}
+
+.kv{
+  min-width:0;
+  overflow-wrap:anywhere;   /* 長字可強制斷行 */
+  word-break:break-word;
+}
+
+/* 讓 Selected Projects 的卡片在手機不會往外撐 */
+@media (max-width: 560px){
+  .card{ padding:18px; }      /* 手機卡片 padding 小一點 */
+  .pcard{ padding:14px; }
+  .pcard h3{
+    font-size:16px;
+    line-height:1.35;
+    overflow-wrap:anywhere;
+  }
+}
 
 </style>
 </head>
@@ -576,7 +605,11 @@ li{margin:6px 0}
     <div class="card">
       <div class="section-title"><h2>🧩 Professional Experience</h2></div>
 
-      <b>SCT Ltd. Taiwan Branch — Digital IC Design Engineer</b>
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="assert/images/siliconcore.png" style="height:28px">
+          <b>SCT Ltd. Taiwan Branch — Digital IC Design Engineer</b>
+        </div>
+        
       <div class="pmeta">2025.10 ~ Present</div>
 
       <ul>
@@ -631,9 +664,14 @@ li{margin:6px 0}
     <div class="card">
       <div class="section-title"><h2>🎓 Education</h2></div>
 
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <img src="assert/images/YZU.png" style="height:36px">
+        <b>Yuan Ze University</b>
+      </div>
+      
       <div class="pgrid">
-        <p class="kv"><b>Yuan Ze University</b>M.S. in Electrical Engineering (2025)</p>
-        <p class="kv"><b>Yuan Ze University</b>B.S. in Electrical Engineering</p>
+        <p class="kv">M.S. in Electrical Engineering (2025)</p>
+        <p class="kv">B.S. in Electrical Engineering</p>
       </div>
     </div>
   </div>
