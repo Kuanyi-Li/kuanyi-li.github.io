@@ -271,6 +271,44 @@ li{margin:6px 0}
 
 /* anchor offset for sticky nav */
 .anchor{scroll-margin-top: 86px;}
+/* --- Added: hero photo + icon buttons --- */
+.hero-left{
+  display:flex;
+  gap:16px;
+  align-items:center;
+}
+.profile-photo{
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--line);
+  background:#fff;
+}
+
+.icon-btn{
+  width:42px; height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:.15s ease;
+  text-decoration:none;
+}
+.icon-btn:hover{
+  transform: translateY(-1px);
+  box-shadow:0 10px 25px rgba(16,24,40,.10);
+}
+.icon-btn img{
+  width:22px;height:22px;
+  object-fit:contain;
+}
+
+@media (max-width: 520px){
+  .profile-photo{width:76px;height:76px;}
+}
 </style>
 </head>
 
@@ -294,7 +332,6 @@ li{margin:6px 0}
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#training">Training</a>
-      <a href="#contact">Contact</a>
     </div>
   </div>
 </div>
@@ -304,22 +341,37 @@ li{margin:6px 0}
   <!-- Hero -->
   <div class="card hero">
     <div class="hero-top">
-      <div>
-        <h1>Kuan-Yi Li <span style="color:var(--muted);font-weight:600;font-size:18px">(Simon Li)</span></h1>
-        <p class="subtitle">
-          Digital IC Design Engineer @ SCT Ltd. Taiwan Branch
-        </p>
-
-        <div class="badges">
-          <span class="badge"><span class="dot"></span>RTL / Verilog</span>
-          <span class="badge"><span class="dot"></span>DC / ICC Flow</span>
-          <span class="badge"><span class="dot"></span>Timing-aware Design</span>
-          <span class="badge"><span class="dot"></span>TOEIC 890</span>
+      <div class="hero-left">
+        <img class="profile-photo" src="assets/images/profile.jpg" alt="Kuan-Yi Li">
+      
+        <div>
+          <h1>Kuan-Yi Li <span style="color:var(--muted);font-weight:600;font-size:18px">(Simon Li)</span></h1>
+          <p class="subtitle">
+            Digital IC Design Engineer @ SCT Ltd. Taiwan Branch
+          </p>
+      
+          <div class="badges">
+            <span class="badge"><span class="dot"></span>RTL / Verilog</span>
+            <span class="badge"><span class="dot"></span>DC / ICC Flow</span>
+            <span class="badge"><span class="dot"></span>Timing-aware Design</span>
+            <span class="badge"><span class="dot"></span>TOEIC 890</span>
+          </div>
         </div>
       </div>
 
       <div class="actions">
-        <a class="btn primary" href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="icon-btn"
+           href="https://www.linkedin.com/in/simon-li-014084275/"
+           target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <img src="assets/images/linkedin.png" alt="LinkedIn">
+        </a>
+      
+        <a class="btn primary"
+           href="assets/files/Kuan-Yi_Li_English_Resume.pdf"
+           download>
+          Download Resume (PDF)
+        </a>
+      
         <a class="btn" href="mailto:s51511830@gmail.com">Email</a>
         <a class="btn" href="tel:+886952765169">Call</a>
       </div>
@@ -338,6 +390,7 @@ li{margin:6px 0}
         My work focuses on RTL-based digital IC design and AI-driven hardware acceleration, with hands-on experience
         translating algorithm-level concepts into hardware-efficient architectures.
       </p>
+      <p style="margin:12px 0 0 0">
         Familiar with Verilog RTL design, functional simulation, synthesis, and physical design flows, with solid understanding
         of timing-aware design and system-level integration.
       </p>
@@ -431,34 +484,47 @@ li{margin:6px 0}
     </div>
   </div>
 
-  <!-- Training -->
-  <div id="training" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>📚 Certifications & Training</h2></div>
-      <ul>
-        <li>TSRI — Cell-Based IC Physical Design and Verification with IC Compiler (21hr)</li>
-        <li>2023 IEEE 12th Global Conference on Consumer Electronics (GCCE 2023) — Nara, Japan</li>
-        <li>2024 International Automatic Control Conference (CASA 2024) — Taoyuan, Taiwan</li>
-      </ul>
+<!-- Training -->
+<div id="training" class="anchor section">
+  <div class="card">
+    <div class="section-title"><h2>📚 Certifications & Training</h2></div>
+
+    <ul>
+      <li>TSRI — Cell-Based IC Physical Design and Verification with IC Compiler (21hr)</li>
+      <li>2023 IEEE 12th Global Conference on Consumer Electronics (GCCE 2023) — Nara, Japan</li>
+      <li>2024 International Automatic Control Conference (CASA 2024) — Taoyuan, Taiwan</li>
+    </ul>
+
+    <div class="hr"></div>
+    <div class="pmeta">Certificates</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+
+      <a href="assets/images/toeic_redacted_cropped.png" target="_blank">
+        <img src="assets/images/toeic.png"
+             alt="TOEIC Certificate"
+             style="width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;">
+      </a>
+
+      <a href="assets/images/gcce2023.png" target="_blank">
+        <img src="assets/images/gcce2023.png"
+             alt="IEEE GCCE 2023"
+             style="width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;">
+      </a>
+
+      <a href="assets/images/tsri.jpg" target="_blank">
+        <img src="assets/images/tsri.jpg"
+             alt="TSRI Certificate"
+             style="width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;">
+      </a>
+
     </div>
   </div>
+</div>
 
-  <!-- Contact -->
-  <div id="contact" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>📬 Contact</h2></div>
-
-      <div class="contact-line">
-        <span class="pill">📧 <a href="mailto:s51511830@gmail.com">s51511830@gmail.com</a></span>
-        <span class="pill">📱 <a href="tel:+886952765169">+886-952-765-169</a></span>
-        <span class="pill">🔗 <a href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noreferrer">LinkedIn</a></span>
-      </div>
-
-      <div class="smallnote" style="margin-top:14px">
-        © <span id="y"></span> Kuan-Yi Li · Built with GitHub Pages
-      </div>
-    </div>
-  </div>
+<div style="text-align:center;color:#98a2b3;font-size:12px;margin-top:40px">
+  © <span id="y"></span> Kuan-Yi Li · Built with GitHub Pages
+</div>
 
 </div>
 
