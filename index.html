@@ -1,178 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kuan-Yi Li | Digital IC Design Engineer</title>
+<meta name="description" content="Kuan-Yi Li (Simon Li) — Digital IC Design Engineer. RTL/Verilog, DC/ICC, Timing-aware Design, DRL hardware acceleration." />
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f8;
-  color: #222;
+:root{
+  --bg:#f4f6f8;
+  --card:#ffffff;
+  --text:#1f2328;
+  --muted:#667085;
+  --line:#e6e8eb;
+  --accent:#2f6feb;   /* professional blue */
+  --accent2:#111827;  /* dark */
+  --shadow: 0 10px 30px rgba(16,24,40,.08);
+  --radius: 14px;
 }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: white;
-  padding: 50px 40px;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
 }
 
-h1 { margin-bottom: 5px; }
-h2 { margin-top: 50px; }
-
-.section { margin-top: 30px; }
-
-hr {
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 30px 0;
+/* layout */
+.wrap{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 18px 64px;
 }
 
-ul { padding-left: 20px; }
-
-.tag {
+/* top bar */
+.nav{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: rgba(244,246,248,.75);
+  border-bottom: 1px solid rgba(230,232,235,.9);
+}
+.nav-inner{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width: 220px;
+}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  background: linear-gradient(135deg, #2f6feb, #7c3aed);
   display:inline-block;
-  background:#eee;
-  padding:4px 10px;
-  margin:4px 6px 4px 0;
-  border-radius:4px;
+}
+.brand b{font-size:14px}
+.brand span{display:block;color:var(--muted);font-size:12px;margin-top:-2px}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:10px;
+  transition: .15s ease;
+  white-space:nowrap;
+}
+.nav a:hover{background:#fff;color:var(--text);box-shadow:0 6px 18px rgba(16,24,40,.06)}
+.nav-links{
+  display:flex; gap:4px; align-items:center; overflow:auto;
+}
+
+/* cards */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px 26px;
+}
+
+.hero{
+  margin-top: 18px;
+}
+.hero-top{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+h1{
+  margin:0 0 6px 0;
+  font-size: 34px;
+  letter-spacing:-0.6px;
+}
+.subtitle{
+  color:var(--muted);
+  margin:0;
+  font-size: 15px;
+}
+.badges{
+  display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid var(--line);
+  background:#fbfbfc;
+  color:var(--accent2);
+  padding:6px 10px;
+  border-radius: 999px;
+  font-size:12px;
+}
+.badge .dot{
+  width:8px;height:8px;border-radius:999px;background:var(--accent);
+  display:inline-block;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius: 12px;
+  border:1px solid var(--line);
+  text-decoration:none;
+  font-size: 13px;
+  color: var(--text);
+  background:#fff;
+  transition:.15s ease;
+}
+.btn:hover{transform: translateY(-1px); box-shadow:0 10px 25px rgba(16,24,40,.10)}
+.btn.primary{
+  background: var(--accent);
+  border-color: transparent;
+  color:#fff;
+}
+.btn.primary:hover{box-shadow:0 12px 28px rgba(47,111,235,.25)}
+.smallnote{
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* section */
+.section{
+  margin-top: 18px;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin: 0 0 10px 0;
+}
+.section-title h2{
+  margin:0;
+  font-size:18px;
+  letter-spacing:-0.2px;
+}
+.hr{
+  height:1px;
+  background:var(--line);
+  margin: 16px 0;
+}
+
+/* two columns */
+.grid-2{
+  display:grid;
+  grid-template-columns: 1.3fr .9fr;
+  gap: 16px;
+}
+@media (max-width: 860px){
+  .grid-2{grid-template-columns: 1fr;}
+  .brand{min-width:unset}
+}
+
+/* lists */
+ul{margin:10px 0 0 18px}
+li{margin:6px 0}
+
+/* project cards */
+.projects{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.pcard{
+  border:1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 16px;
+  background: #fff;
+}
+.pcard h3{
+  margin:0 0 6px 0;
+  font-size:15px;
+}
+.pmeta{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom: 8px;
+}
+.pgrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 680px){
+  .pgrid{grid-template-columns:1fr}
+}
+.kv{
+  margin:0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border:1px solid var(--line);
+  background:#fbfbfc;
+  font-size: 13px;
+}
+.kv b{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+
+/* tags */
+.tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.tag{
+  display:inline-block;
+  background:#f7f8fa;
+  border:1px solid var(--line);
+  padding:6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--accent2);
+}
+
+/* footer contact */
+.contact-line{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 8px;
+}
+.pill{
+  border:1px solid var(--line);
+  background:#fff;
+  padding:8px 10px;
+  border-radius: 999px;
   font-size:13px;
 }
+.pill a{color:var(--accent); text-decoration:none}
+.pill a:hover{text-decoration:underline}
 
-.header {
-  text-align:center;
-}
-
-.contact a {
-  color:#0070f3;
-  text-decoration:none;
-}
-
-.small {
-  color:#666;
-  font-size:14px;
-}
+/* anchor offset for sticky nav */
+.anchor{scroll-margin-top: 86px;}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- Top Navigation -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="avatar" aria-hidden="true"></span>
+      <div>
+        <b>Kuan-Yi Li</b>
+        <span>Digital IC Design Engineer</span>
+      </div>
+    </div>
 
-<div class="header">
-<h1>Kuan-Yi Li</h1>
-<b>Digital IC Design Engineer @ SCT Ltd. Taiwan Branch</b><br>
-<span class="small">RTL / Verilog · Timing-Aware Design · Physical Design Flow</span>
+    <div class="nav-links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#training">Training</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
 </div>
 
-<hr>
+<div class="wrap">
 
-<div class="section">
-<h2>About</h2>
+  <!-- Hero -->
+  <div class="card hero">
+    <div class="hero-top">
+      <div>
+        <h1>Kuan-Yi Li <span style="color:var(--muted);font-weight:600;font-size:18px">(Simon Li)</span></h1>
+        <p class="subtitle">
+          Digital IC Design Engineer @ SCT Ltd. Taiwan Branch · TOEIC 890
+        </p>
 
-<p>
-Digital IC Design Engineer with a Master’s degree in Electrical Engineering from Yuan Ze University.
-Experienced in RTL development, functional debugging, synthesis and APR flows using Synopsys Design Compiler and IC Compiler.
-</p>
+        <div class="badges">
+          <span class="badge"><span class="dot"></span>RTL / Verilog</span>
+          <span class="badge"><span class="dot"></span>DC / ICC Flow</span>
+          <span class="badge"><span class="dot"></span>Timing-aware Design</span>
+          <span class="badge"><span class="dot"></span>DRL Hardware Acceleration</span>
+        </div>
+      </div>
 
-<p>
-My research background focuses on AI hardware acceleration and deep reinforcement learning, bridging algorithm-level design with hardware-efficient architectures.
-</p>
+      <div class="actions">
+        <a class="btn primary" href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="btn" href="mailto:s51511830@gmail.com">Email</a>
+        <a class="btn" href="tel:+886952765169">Call</a>
+      </div>
+    </div>
+    <div class="smallnote">
+      Available for roles in Digital IC Design / RTL / Timing-aware design.
+    </div>
+  </div>
+
+  <!-- About + Quick Facts -->
+  <div id="about" class="anchor section grid-2">
+    <div class="card">
+      <div class="section-title"><h2>💼 About</h2></div>
+      <p style="margin:0">
+        Digital IC Design Engineer with a Master’s degree in Electrical Engineering from Yuan Ze University.
+        My work focuses on RTL-based digital IC design and AI-driven hardware acceleration, with hands-on experience
+        translating algorithm-level concepts into hardware-efficient architectures.
+      </p>
+      <p style="margin:12px 0 0 0;color:var(--muted)">
+        Familiar with Verilog RTL design, functional simulation, synthesis, and physical design flows, with solid understanding
+        of timing-aware design and system-level integration.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><h2>📌 Highlights</h2></div>
+
+      <div class="pgrid">
+        <p class="kv"><b>Current Role</b>SCT · Digital IC Design Engineer</p>
+        <p class="kv"><b>Toolchain</b>ModelSim · DC · ICC · Linux</p>
+        <p class="kv"><b>Research</b>FCDQN + OLP-CIE (DRL)</p>
+        <p class="kv"><b>Flow Experience</b>Synth · APR · DRC · STA (TSMC 90nm)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div id="skills" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>💻 Technical Skills</h2></div>
+
+      <div class="tags">
+        <span class="tag">Verilog</span>
+        <span class="tag">RTL Development</span>
+        <span class="tag">Timing-aware Design</span>
+        <span class="tag">ModelSim</span>
+        <span class="tag">Synopsys Design Compiler</span>
+        <span class="tag">Synopsys IC Compiler</span>
+        <span class="tag">Physical Design Flow</span>
+        <span class="tag">Linux</span>
+        <span class="tag">MATLAB</span>
+        <span class="tag">Deep Reinforcement Learning</span>
+      </div>
+
+      <div class="hr"></div>
+      <div class="pgrid">
+        <p class="kv"><b>Digital Design</b>RTL design, module integration, timing-aware thinking</p>
+        <p class="kv"><b>Verification</b>Waveform debug, functional simulation, bring-up support</p>
+        <p class="kv"><b>EDA</b>DC/ICC flows, constraints awareness, issue triage</p>
+        <p class="kv"><b>Research-to-RTL</b>Algorithm → architecture → Verilog implementation</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div id="experience" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>🧩 Professional Experience</h2></div>
+
+      <b>SCT Ltd. Taiwan Branch — Digital IC Design Engineer</b>
+      <div class="pmeta">2025.10 ~ Present</div>
+
+      <ul>
+        <li>Design and modify RTL modules using Verilog for digital IC systems</li>
+        <li>Perform waveform debugging and functional verification in Linux environment</li>
+        <li>Support timing-aware RTL development and synthesis-related issue analysis</li>
+        <li>Participate in internal bring-up and design validation flows</li>
+        <li>Collaborate with cross-functional teams for feature integration</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <div id="projects" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>🚀 Selected Projects</h2></div>
+
+      <div class="projects">
+
+        <div class="pcard">
+          <h3>Fast-Convergent Deep Reinforcement Learning for Object-Location Prediction (FCDQN)</h3>
+          <div class="pmeta">Algorithm + Verilog Accelerator · DC/ICC · TSMC 90nm</div>
+
+          <div class="pgrid">
+            <p class="kv"><b>Impact</b>~76% fewer training iterations while maintaining accuracy</p>
+            <p class="kv"><b>Implementation</b>Verilog RTL, verified with ModelSim</p>
+            <p class="kv"><b>Flow</b>Synthesis (DC), APR/DRC (ICC), STA under 90nm</p>
+            <p class="kv"><b>Efficiency</b>~75% energy savings & ~20% area reduction vs prior DQN accelerators</p>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <h3>Object-Location Prediction Based on CIE Color Difference (OLP-CIE)</h3>
+          <div class="pmeta">CIEDE2000-based lightweight preprocessor · IEEE GCCE 2023</div>
+
+          <div class="pgrid">
+            <p class="kv"><b>Accuracy</b>85.5% location accuracy, 90.4% color identification accuracy</p>
+            <p class="kv"><b>Outcome</b>Presented at IEEE GCCE 2023 (Nara, Japan)</p>
+          </div>
+
+          <div style="margin-top:10px">
+            <a class="btn" href="https://ieeexplore.ieee.org/document/10315341" target="_blank" rel="noreferrer">IEEE Paper</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div id="education" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>🎓 Education</h2></div>
+
+      <div class="pgrid">
+        <p class="kv"><b>Yuan Ze University</b>M.S. in Electrical Engineering (2025)</p>
+        <p class="kv"><b>Yuan Ze University</b>B.S. in Electrical Engineering</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Training -->
+  <div id="training" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>📚 Certifications & Training</h2></div>
+      <ul>
+        <li>TSRI — Cell-Based IC Physical Design and Verification with IC Compiler (21hr)</li>
+        <li>2023 IEEE 12th Global Conference on Consumer Electronics (GCCE 2023) — Nara, Japan</li>
+        <li>2024 International Automatic Control Conference (CASA 2024) — Taoyuan, Taiwan</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div id="contact" class="anchor section">
+    <div class="card">
+      <div class="section-title"><h2>📬 Contact</h2></div>
+
+      <div class="contact-line">
+        <span class="pill">📧 <a href="mailto:s51511830@gmail.com">s51511830@gmail.com</a></span>
+        <span class="pill">📱 <a href="tel:+886952765169">+886-952-765-169</a></span>
+        <span class="pill">🔗 <a href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noreferrer">LinkedIn</a></span>
+      </div>
+
+      <div class="smallnote" style="margin-top:14px">
+        © <span id="y"></span> Kuan-Yi Li · Built with GitHub Pages
+      </div>
+    </div>
+  </div>
 
 </div>
 
-<div class="section">
-<h2>Professional Experience</h2>
-
-<b>SCT Ltd. Taiwan Branch — Digital IC Design Engineer (2025.10 ~ Present)</b>
-
-<ul>
-<li>Design and modify RTL modules using Verilog for digital IC systems</li>
-<li>Perform waveform debugging and functional verification in Linux environment</li>
-<li>Support timing-aware RTL development and synthesis-related issue analysis</li>
-<li>Participate in internal bring-up and design validation flows</li>
-<li>Collaborate with cross-functional teams for feature integration</li>
-</ul>
-
-</div>
-
-<div class="section">
-<h2>Selected Projects</h2>
-
-<b>Fast-Convergent Deep Reinforcement Learning for Object-Location Prediction (FCDQN)</b>
-<ul>
-<li>Designed DRL algorithm reducing training iterations by ~76%</li>
-<li>Implemented accelerator architecture in Verilog</li>
-<li>Verified with ModelSim</li>
-<li>Synthesized with Synopsys Design Compiler</li>
-<li>APR, DRC and STA using Synopsys IC Compiler (TSMC 90nm)</li>
-<li>Achieved ~75% energy savings and ~20% area reduction vs prior DQN accelerators</li>
-</ul>
-
-<b>Object-Location Prediction Based on CIE Color Difference (OLP-CIE)</b>
-<ul>
-<li>Proposed lightweight CIEDE2000-based prediction method</li>
-<li>85.5% location accuracy and 90.4% color identification accuracy</li>
-<li>Presented at IEEE GCCE 2023 (Nara, Japan)</li>
-</ul>
-
-<b>Air Quality Forecast Using LSTM</b>
-<ul>
-<li>Built ML forecasting pipeline with real-world datasets</li>
-</ul>
-
-</div>
-
-<div class="section">
-<h2>Technical Skills</h2>
-
-<div class="tag">Verilog</div>
-<div class="tag">RTL Development</div>
-<div class="tag">Timing-Aware Design</div>
-<div class="tag">Synopsys Design Compiler</div>
-<div class="tag">Synopsys IC Compiler</div>
-<div class="tag">ModelSim</div>
-<div class="tag">STA Basics</div>
-<div class="tag">APR Flow</div>
-<div class="tag">MATLAB</div>
-<div class="tag">Linux</div>
-<div class="tag">Deep Reinforcement Learning</div>
-
-</div>
-
-<div class="section">
-<h2>Education</h2>
-
-<b>Yuan Ze University</b><br>
-M.S. in Electrical Engineering (2025)<br>
-B.S. in Electrical Engineering
-
-</div>
-
-<div class="section">
-<h2>Certifications & Training</h2>
-
-<ul>
-<li>TOEIC 890</li>
-<li>TSRI — Cell-Based IC Physical Design & Verification with IC Compiler (21hr)</li>
-<li>IEEE GCCE 2023 (Japan)</li>
-<li>CASA 2024 (Taiwan)</li>
-</ul>
-
-</div>
-
-<div class="section contact">
-<h2>Contact</h2>
-
-📧 s51511830@gmail.com<br>
-📱 +886-952-765-169<br>
-🔗 <a href="https://www.linkedin.com/in/simon-li-014084275/">LinkedIn</a>
-
-</div>
-
-</div>
+<script>
+document.getElementById("y").textContent = new Date().getFullYear();
+</script>
 
 </body>
 </html>
