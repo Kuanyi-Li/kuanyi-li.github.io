@@ -378,57 +378,40 @@ li{margin:6px 0}
 }
 
 /* =========================
-   Mobile optimization
+   Mobile fixes (Navbar + Hero actions)
    ========================= */
 @media (max-width: 560px){
 
-  /* Navbar：縮高、不要擠爆、左邊名字不換行 */
+  /* ---------- Navbar：避免選單被截斷 ---------- */
   .nav-inner{
-    padding: 10px 12px;
+    flex-wrap: wrap;            /* 讓 brand + links 必要時換行 */
     gap: 10px;
   }
 
-  .brand{
-    min-width: 0;
-    gap: 10px;
+  /* 你目前 brand 裡有兩個 <b>，手機會很佔空間：先把第二個 b 隱藏 */
+  .brand b + b{                 /* 選到第二個 b */
+    display: none;
   }
 
-  /* 讓右邊導覽可以左右滑，不要把版面撐破 */
+  /* links 佔滿一整排，並允許左右滑（不會被截斷） */
   .nav-links{
-    gap: 8px;
+    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    gap: 10px;
+    padding-bottom: 2px;
   }
   .nav-links::-webkit-scrollbar{ display:none; }
 
-  /* Navbar 文字更大更清楚，且不換行 */
   .nav a{
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 650;
     padding: 8px 10px;
-    white-space: nowrap;
+    white-space: nowrap;        /* 每個項目不換行 */
   }
 
-  /* 左邊兩行字你現在用 b b，會很容易換行 -> 壓縮字體/行高 */
-  .brand b{
-    font-size: 14px;
-    line-height: 1.1;
-    display:block;
-    white-space: nowrap;
-  }
-  .brand span{
-    font-size: 12px;
-    line-height: 1.1;
-    white-space: nowrap;
-  }
-
-  .nav-avatar{
-    width:34px;
-    height:34px;
-  }
-
-  /* Hero：改成置中排版，按鈕自動換行且更好點 */
+  /* ---------- Hero：修正 LinkedIn icon 變單獨一行 ---------- */
   .hero-top{
     flex-direction: column;
     align-items: center;
@@ -441,54 +424,43 @@ li{margin:6px 0}
     text-align: center;
   }
 
-  h1{
-    font-size: 30px;
-    line-height: 1.15;
-  }
-
-  /* badge 置中 */
-  .badges{
-    justify-content: center;
-  }
-
-  /* 右邊按鈕區：更好點，滿寬 */
+  /* Hero 右側 actions 用 grid 排版：左 icon + 右 Download，同一排 */
   .actions{
     width: 100%;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    grid-template-areas:
+      "li resume"
+      "email email"
+      "call call";
+    gap: 10px;
+    justify-items: stretch;
   }
 
-  .btn{
-    padding: 12px 14px;
-    font-size: 14px;
+  .linkedin-icon{
+    grid-area: li;
+    width: 56px;
+    height: 56px;
+    justify-self: start;
+  }
+  .linkedin-icon img{
+    width: 36px;
+    height: 36px;
   }
 
   .btn.primary{
-    flex: 1 1 100%;
+    grid-area: resume;
+    width: 100%;
   }
 
-  /* LinkedIn icon 變大好按 */
-  .linkedin-icon{
-    width: 52px;
-    height: 52px;
-  }
-  .linkedin-icon img{
-    width: 34px;
-    height: 34px;
-  }
+  /* Email / Call 讓它滿寬，變成好按的大按鈕 */
+  .btn[href^="mailto"]{ grid-area: email; width: 100%; }
+  .btn[href^="tel"]{    grid-area: call;  width: 100%; }
 
-  /* Projects 裡 kv 文字太小 -> 放大 */
-  .kv{
-    font-size: 15px;
-    padding: 12px 14px;
-  }
-  .kv b{
-    font-size: 13px;
-    margin-bottom: 4px;
-  }
-
-  /* 卡片 padding 在手機略小一點 */
-  .card{
-    padding: 20px 18px;
+  /* ---------- Hero 標題避免 (Simon Li) 被擠到很怪 ---------- */
+  h1{
+    font-size: 30px;
+    line-height: 1.15;
   }
 }
 
@@ -504,7 +476,6 @@ li{margin:6px 0}
       <img class="nav-avatar" src="assert/images/profile.jpg" alt="Kuan-Yi Li">
       <div>
         <b>Kuan-Yi Li</b>
-        <span>Digital IC Design Engineer</span>
       </div>
     </div>
 
