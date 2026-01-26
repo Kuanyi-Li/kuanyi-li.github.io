@@ -83,19 +83,31 @@ body{
 .nav-links{
   display:flex; gap:4px; align-items:center; overflow:auto;
 }
-.nav a,
+/* navbar text bigger + dark */
+
+.nav a{
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .brand b{
-  color:#fff;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .brand span{
-  color:#9fb3c8;
+  color: var(--muted);
+  font-size: 13px;
 }
 
+/* hover 改回白底深字 */
 .nav a:hover{
-  background:rgba(255,255,255,.08);
-  color:#fff;
-}  
+  background:#fff;
+  color: var(--text);
+  box-shadow:0 6px 18px rgba(16,24,40,.06);
+}
 
 /* cards */
 .card{
@@ -249,13 +261,16 @@ li{margin:6px 0}
   padding: 16px 16px;
   background: #fff;
 }
+
 .pcard h3{
-  margin:0 0 6px 0;
-  font-size:15px;
+  margin:0 0 8px 0;
+  font-size:16.5px;
+  letter-spacing:-0.2px;
 }
+
 .pmeta{
   color:var(--muted);
-  font-size:12px;
+  font-size:13.5px;
   margin-bottom: 8px;
 }
 .pgrid{
@@ -266,15 +281,24 @@ li{margin:6px 0}
 @media (max-width: 680px){
   .pgrid{grid-template-columns:1fr}
 }
+
 .kv{
   margin:0;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 12px;
   border:1px solid var(--line);
   background:#fbfbfc;
-  font-size: 13px;
+  font-size: 14.5px;
+  line-height: 1.55;
 }
-.kv b{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+
+.kv b{
+  display:block;
+  font-size: 13px;
+  color:var(--muted);
+  margin-bottom:4px;
+  letter-spacing: .1px;
+}
 
 /* tags */
 .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
@@ -352,6 +376,122 @@ li{margin:6px 0}
   object-fit:cover;
   border:1px solid var(--line);
 }
+
+/* =========================
+   Mobile optimization
+   ========================= */
+@media (max-width: 560px){
+
+  /* Navbar：縮高、不要擠爆、左邊名字不換行 */
+  .nav-inner{
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .brand{
+    min-width: 0;
+    gap: 10px;
+  }
+
+  /* 讓右邊導覽可以左右滑，不要把版面撐破 */
+  .nav-links{
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar{ display:none; }
+
+  /* Navbar 文字更大更清楚，且不換行 */
+  .nav a{
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+
+  /* 左邊兩行字你現在用 b b，會很容易換行 -> 壓縮字體/行高 */
+  .brand b{
+    font-size: 14px;
+    line-height: 1.1;
+    display:block;
+    white-space: nowrap;
+  }
+  .brand span{
+    font-size: 12px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .nav-avatar{
+    width:34px;
+    height:34px;
+  }
+
+  /* Hero：改成置中排版，按鈕自動換行且更好點 */
+  .hero-top{
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .hero-left{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h1{
+    font-size: 30px;
+    line-height: 1.15;
+  }
+
+  /* badge 置中 */
+  .badges{
+    justify-content: center;
+  }
+
+  /* 右邊按鈕區：更好點，滿寬 */
+  .actions{
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn{
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .btn.primary{
+    flex: 1 1 100%;
+  }
+
+  /* LinkedIn icon 變大好按 */
+  .linkedin-icon{
+    width: 52px;
+    height: 52px;
+  }
+  .linkedin-icon img{
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Projects 裡 kv 文字太小 -> 放大 */
+  .kv{
+    font-size: 15px;
+    padding: 12px 14px;
+  }
+  .kv b{
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  /* 卡片 padding 在手機略小一點 */
+  .card{
+    padding: 20px 18px;
+  }
+}
+
 </style>
 </head>
 
@@ -364,7 +504,7 @@ li{margin:6px 0}
       <img class="nav-avatar" src="assert/images/profile.jpg" alt="Kuan-Yi Li">
       <div>
         <b>Kuan-Yi Li</b>
-        <b>Digital IC Design Engineer</b>
+        <span>Digital IC Design Engineer</span>
       </div>
     </div>
 
