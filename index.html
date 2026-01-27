@@ -40,18 +40,18 @@ body{
 
 /* top bar */
 .nav{
-  position: sticky;
+  position: fixed;     /* 改這裡：固定在視窗 */
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 9999;
+
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background: rgba(11, 28, 45, .82);
   border-bottom: 1px solid rgba(255,255,255,.12);
-
-  /* iOS sticky 保險 */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
 }
+
 
 .nav-inner{
   max-width: 980px;
@@ -332,7 +332,7 @@ li{margin:6px 0}
 .pill a:hover{text-decoration:underline}
 
 /* anchor offset for sticky nav */
-.anchor{scroll-margin-top: 86px;}
+.anchor{ scroll-margin-top: 96px; }
 /* --- Added: hero photo + icon buttons --- */
 .hero-left{
   display:flex;
@@ -710,8 +710,6 @@ html, body{ overflow-x:hidden; }
       <li>2023 IEEE 12th Global Conference on Consumer Electronics (GCCE 2023) — Nara, Japan</li>
       <li>2024 International Automatic Control Conference (CASA 2024) — Taoyuan, Taiwan</li>
     </ul>
-    
-    </div>
   </div>
 </div>
 
@@ -722,7 +720,16 @@ html, body{ overflow-x:hidden; }
 </div>
 
 <script>
-document.getElementById("y").textContent = new Date().getFullYear();
+  // Auto offset for fixed navbar (desktop + mobile)
+  function syncNavOffset(){
+    const nav = document.querySelector('.nav');
+    if(!nav) return;
+    document.body.style.paddingTop = nav.offsetHeight + 'px';
+  }
+  window.addEventListener('load', syncNavOffset);
+  window.addEventListener('resize', syncNavOffset);
+
+  document.getElementById("y").textContent = new Date().getFullYear();
 </script>
 
 </body>
