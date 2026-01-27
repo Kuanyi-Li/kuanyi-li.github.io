@@ -52,6 +52,14 @@ body{
   border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
+.nav::after{
+  content:"";
+  position:absolute;
+  right:0; top:0; bottom:0;
+  width:28px;
+  pointer-events:none;
+  background: linear-gradient(to right, rgba(11,28,45,0), rgba(11,28,45,.82));
+}
 
 .nav-inner{
   max-width: 980px;
@@ -160,7 +168,9 @@ h1{
 }
 .hero .subtitle{
   color:#111827;
-  opacity:.9;
+  opacity:1;
+  font-size:16.5px;
+  font-weight:600;
 }
 .badges{
   display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
@@ -295,11 +305,10 @@ li{margin:6px 0}
 }
 
 .kv b{
-  display:block;
-  font-size: 13px;
-  color:var(--muted);
-  margin-bottom:4px;
-  letter-spacing: .1px;
+  font-size:13.5px;
+  color:#475467;     /* 比 muted 深一點，更好讀 */
+  font-weight:700;
+  margin-bottom:6px;
 }
 
 /* tags */
