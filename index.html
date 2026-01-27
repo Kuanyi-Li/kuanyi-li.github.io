@@ -42,11 +42,17 @@ body{
 .nav{
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 9999;
   backdrop-filter: blur(10px);
-  background: rgba(244,246,248,.75);
-  border-bottom: 1px solid rgba(230,232,235,.9);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(11, 28, 45, .82);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+
+  /* iOS sticky 保險 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
+
 .nav-inner{
   max-width: 980px;
   margin: 0 auto;
@@ -56,57 +62,49 @@ body{
   justify-content:space-between;
   gap:12px;
 }
+
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
   min-width: 220px;
 }
-.avatar{
-  width:36px;height:36px;border-radius:50%;
-  background: linear-gradient(135deg, #2f6feb, #7c3aed);
-  display:inline-block;
+
+.brand b{
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
 }
-.brand b{font-size:14px}
-.brand span{display:block;color:var(--muted);font-size:12px;margin-top:-2px}
+
+.brand span{
+  display:block;
+  color: #9fb3c8;
+  font-size: 13px;
+  margin-top: -2px;
+}
+
+.nav-links{
+  display:flex;
+  gap: 4px;
+  align-items:center;
+  overflow:auto;
+}
 
 .nav a{
-  color:var(--muted);
+  color:#fff;
   text-decoration:none;
-  font-size:13px;
+  font-size:15px;
+  font-weight:600;
   padding:8px 10px;
   border-radius:10px;
   transition: .15s ease;
   white-space:nowrap;
 }
-.nav a:hover{background:#fff;color:var(--text);box-shadow:0 6px 18px rgba(16,24,40,.06)}
-.nav-links{
-  display:flex; gap:4px; align-items:center; overflow:auto;
-}
-/* navbar text bigger + dark */
 
-.nav a{
-  color: var(--text);
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.brand b{
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.brand span{
-  color: var(--muted);
-  font-size: 13px;
-}
-
-/* hover 改回白底深字 */
 .nav a:hover{
-  background:#fff;
-  color: var(--text);
-  box-shadow:0 6px 18px rgba(16,24,40,.06);
+  background: rgba(255,255,255,.10);
+  color:#fff;
+  box-shadow:none;
 }
 
 /* cards */
@@ -381,6 +379,26 @@ li{margin:6px 0}
   border:1px solid var(--line);
 }
 
+.link-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--accent);
+  text-decoration:none;
+  font-size:13px;
+  max-width:100%;
+}
+
+.link-chip:hover{
+  text-decoration:underline;
+  transform: translateY(-1px);
+  box-shadow:0 10px 25px rgba(16,24,40,.10);
+}
+
 /* =========================
    Mobile fixes (Navbar + Hero actions)
    ========================= */
@@ -540,7 +558,7 @@ html, body{ overflow-x:hidden; }
       
           <div class="badges">
             <span class="badge"><span class="dot"></span>RTL / Verilog</span>
-            <span class="badge"><span class="dot"></span>DC / ICC Flow</span>
+            <span class="badge"><span class="dot"></span>Physical Design Flow</span>
             <span class="badge"><span class="dot"></span>Timing-aware Design</span>
             <span class="badge"><span class="dot"></span>TOEIC 890</span>
           </div>
@@ -574,7 +592,7 @@ html, body{ overflow-x:hidden; }
     <div class="card">
       <div class="section-title"><h2>💼 About</h2></div>
       <p style="margin:0">
-        Digital IC Design Engineer with a Master’s degree in Electrical Engineering from Yuan Ze University.
+        Digital IC Design Engineer with a Master’s degree in Electrical Engineering.
         My work focuses on RTL-based digital IC design and AI-driven hardware acceleration, with hands-on experience
         translating algorithm-level concepts into hardware-efficient architectures.
       </p>
@@ -636,7 +654,7 @@ html, body{ overflow-x:hidden; }
 
         <div class="pcard">
           <h3>Fast-Convergent Deep Reinforcement Learning for Object-Location Prediction (FCDQN)</h3>
-          <div class="pmeta">Algorithm + Verilog Accelerator · DC/ICC · TSMC 90nm</div>
+          <div class="pmeta">AI Algorithm (DRL) + Verilog Accelerator · DC/ICC · TSMC 90nm · MATLAB</div>
 
           <div class="pgrid">
             <p class="kv"><b>Impact</b>~76% fewer training iterations while maintaining accuracy</p>
@@ -656,12 +674,11 @@ html, body{ overflow-x:hidden; }
           </div>
 
           <div style="margin-top:10px">
-            <a class="btn" href="https://ieeexplore.ieee.org/document/10315341" target="_blank" rel="noreferrer">
-              View on IEEE Xplore
+            <a class="link-chip" href="https://ieeexplore.ieee.org/document/10315341" target="_blank" rel="noreferrer">
+              ↗ View on IEEE Xplore
             </a>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -677,7 +694,7 @@ html, body{ overflow-x:hidden; }
       </div>
       
       <div class="pgrid">
-        <p class="kv">M.S. in Electrical Engineering (2025)</p>
+        <p class="kv">M.S. in Electrical Engineering</p>
         <p class="kv">B.S. in Electrical Engineering</p>
       </div>
     </div>
