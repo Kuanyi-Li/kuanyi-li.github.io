@@ -1,746 +1,517 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kuan-Yi Li | Digital IC Design Engineer</title>
-<meta name="description" content="Kuan-Yi Li (Simon Li) — Digital IC Design Engineer. RTL/Verilog, DC/ICC, Timing-aware Design, DRL hardware acceleration." />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simon Li — Digital IC Design Engineer</title>
+<meta name="description" content="Simon Li (李冠毅) — Digital IC Design Engineer. ASIC front-end: RTL design, synthesis, STA, gate-level simulation and mixed-signal integration for MicroLED display driver ICs.">
+<meta name="theme-color" content="#0A1A33">
+<link rel="canonical" href="https://kuanyi-li.github.io/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Simon Li — Digital IC Design Engineer">
+<meta property="og:description" content="ASIC front-end design: RTL, synthesis, timing, gate-level verification, mixed-signal integration.">
+<meta property="og:url" content="https://kuanyi-li.github.io/">
+<meta property="og:image" content="https://kuanyi-li.github.io/assets/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+<script>
+  // Apply the saved theme before first paint (dark is the default).
+  (function () {
+    var t = 'dark';
+    try { t = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.className = 'js';
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', t === 'light' ? '#F3EFE6' : '#0A1A33');
+  })();
+</script>
 
 <style>
+@font-face{font-family:"IBM Plex Sans";font-weight:400;font-style:normal;font-display:swap;src:url(assets/fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-weight:500;font-style:normal;font-display:swap;src:url(assets/fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-weight:600;font-style:normal;font-display:swap;src:url(assets/fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;font-style:normal;font-display:swap;src:url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-style:normal;font-display:swap;src:url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
+
 :root{
-  --bg:#0b1c2d;
-  --card:#ffffff;
-  --text:#1f2328;
-  --muted:#667085;
-  --line:#e6e8eb;
-  --accent:#2f6feb;   /* professional blue */
-  --accent2:#111827;  /* dark */
-  --shadow: 0 10px 30px rgba(11,28,45,.85);
-  --radius: 14px;
+  --sans:"IBM Plex Sans","PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --header-h:64px;
+  --gutter:32px;
+}
+/* Dark: blueprint (default) */
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0A1A33;
+  --fg:#E6EEFF;
+  --strong:#FFFFFF;
+  --body:#C9D6EE;
+  --muted:#9DB2D4;
+  --line:rgba(157,178,212,.28);
+  --line-strong:rgba(157,178,212,.6);
+  --accent:#FFB84D;
+  --on-accent:#0A1A33;
+  --card:rgba(255,255,255,.025);
+  --header-bg:rgba(10,26,51,.92);
+}
+/* Light: drawing on paper */
+[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F3EFE6;
+  --fg:#0A1A33;
+  --strong:#06122A;
+  --body:#23385A;
+  --muted:#4A5D7A;
+  --line:rgba(10,26,51,.2);
+  --line-strong:rgba(10,26,51,.5);
+  --accent:#B45309;
+  --on-accent:#F3EFE6;
+  --card:rgba(255,255,255,.55);
+  --header-bg:rgba(243,239,230,.92);
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background:var(--bg);
-  color:var(--text);
-  line-height:1.7;
-  font-size:16.5px;
+  color:var(--fg);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  transition:background-color .25s ease,color .25s ease;
 }
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{max-width:100%}
 
-/* layout */
-.wrap{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 24px 18px 64px;
+.wrap{max-width:1160px;margin:0 auto;padding:0 var(--gutter)}
+
+/* ---------- Sticky header ---------- */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  height:var(--header-h);
+  background:var(--header-bg);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
 }
-
-/* top bar */
-.nav{
-  position: fixed;     /* 改這裡：固定在視窗 */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: rgba(11, 28, 45, .82);
-  border-bottom: 1px solid rgba(255,255,255,.12);
-}
-
-.nav::after{
-  content:"";
-  position:absolute;
-  right:0; top:0; bottom:0;
-  width:28px;
-  pointer-events:none;
-  background: linear-gradient(to right, rgba(11,28,45,0), rgba(11,28,45,.82));
-}
-
-.nav-inner{
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 12px 18px;
-  display:flex;
+.bar{
+  height:100%;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
   align-items:center;
-  justify-content:space-between;
-  gap:12px;
+  gap:0 24px;
 }
+.who{display:flex;align-items:baseline;gap:12px;min-width:0;white-space:nowrap}
+.who .mark{width:9px;height:9px;background:var(--accent);align-self:center;flex:none}
+.who-name{font-weight:600;font-size:17px;color:var(--strong);letter-spacing:-.005em}
+.who-role{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+.nav{display:flex;gap:28px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nav a{padding:6px 0;box-shadow:inset 0 -1px 0 transparent;transition:color .15s ease,box-shadow .15s ease}
+.nav a:hover{color:var(--strong)}
+.nav a.active{color:var(--strong);box-shadow:inset 0 -1px 0 var(--accent)}
+.tools{display:flex;align-items:center;gap:10px;justify-self:end}
+.btn-resume{
+  display:inline-flex;align-items:center;min-height:38px;padding:0 14px;
+  border:1px solid var(--line-strong);color:var(--fg);
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  transition:border-color .15s ease,color .15s ease;
+}
+.btn-resume:hover{border-color:var(--accent);color:var(--accent)}
+.theme-toggle{
+  width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--line-strong);color:var(--fg);cursor:pointer;padding:0;
+  transition:border-color .15s ease,color .15s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.theme-toggle svg{width:18px;height:18px;display:block}
+[data-theme="dark"] .icon-moon{display:none}
+[data-theme="light"] .icon-sun{display:none}
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width: 220px;
-}
-
-.brand b{
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.brand span{
-  display:block;
-  color: #9fb3c8;
-  font-size: 13px;
-  margin-top: -2px;
-}
-
-.nav-links{
-  display:flex;
-  gap: 4px;
-  align-items:center;
-  overflow:auto;
-}
-
-.nav a{
-  color:#fff;
-  text-decoration:none;
-  font-size:15px;
-  font-weight:600;
-  padding:8px 10px;
-  border-radius:10px;
-  transition: .15s ease;
-  white-space:nowrap;
-}
-
-.nav a:hover{
-  background: rgba(255,255,255,.10);
-  color:#fff;
-  box-shadow:none;
-}
-
-/* cards */
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 26px 26px;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.card:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 16px 44px rgba(11,28,45,.65);
-}
-
-.hero{
-  margin-top: 18px;
-  position: relative;
-  overflow: hidden;
-}
-/* subtle glow behind hero */
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:-120px -80px auto -80px;
-  height: 260px;
-  background: radial-gradient(circle at 30% 40%,
-    rgba(47,111,235,.35),
-    rgba(124,58,237,.18),
-    rgba(11,28,45,0) 70%);
-  filter: blur(18px);
-  pointer-events:none;
-}
-.hero-top{
-  display:flex;
-  gap:18px;
-  align-items:flex-start;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  position: relative;
-  z-index: 1;
-}
-h1{
-  margin:0 0 6px 0;
-  font-size: 34px;
-  letter-spacing:-0.6px;
-}
-.subtitle{
-  color:var(--muted);
-  margin:0;
-  font-size: 15px;
-}
-.hero .subtitle{
-  color:#111827;
-  opacity:1;
-  font-size:16.5px;
-  font-weight:600;
-}
-.badges{
-  display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
-}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  border:1px solid var(--line);
-  background:#fbfbfc;
-  color:var(--accent2);
-  padding:6px 10px;
-  border-radius: 999px;
-  font-size:12px;
-}
-.badge .dot{
-  width:8px;height:8px;border-radius:999px;background:var(--accent);
-  display:inline-block;
-}
-
-.actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-}
+/* ---------- Hero ---------- */
+.hero{padding:72px 0 24px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start}
+.hero-text{flex:1 1 520px;min-width:0}
+h1{margin:0;font-weight:600;font-size:clamp(56px,10vw,104px);line-height:.98;letter-spacing:-.035em;color:var(--strong)}
+.name-zh{margin-top:14px;font-size:30px;font-weight:500;color:var(--muted);letter-spacing:.04em}
+.role{margin:28px 0 0;font-size:24px;font-weight:500;color:var(--accent)}
+.lede{margin:16px 0 0;max-width:580px;font-size:19px;line-height:1.6;color:var(--fg)}
+.sub{margin:14px 0 0;max-width:580px;color:var(--muted)}
+.actions{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px}
 .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:10px 14px;
-  border-radius: 12px;
-  border:1px solid var(--line);
-  text-decoration:none;
-  font-size: 13px;
-  color: var(--text);
-  background:#fff;
-  transition:.15s ease;
+  display:inline-flex;align-items:center;min-height:48px;padding:0 22px;
+  border:1px solid var(--line-strong);color:var(--fg);font-weight:500;font-size:15px;
+  transition:border-color .15s ease,color .15s ease,background-color .15s ease;
 }
-.btn:hover{transform: translateY(-1px); box-shadow:0 10px 25px rgba(16,24,40,.10)}
-.btn.primary{
-  background: var(--accent);
-  border-color: transparent;
-  color:#fff;
-}
-.btn.primary:hover{box-shadow:0 12px 28px rgba(47,111,235,.25)}
-.smallnote{
-  color: var(--muted);
-  font-size: 15px;
-  margin-top: 12px;
-}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600;letter-spacing:.02em}
+.btn.primary:hover{background:transparent;color:var(--accent)}
 
-/* section */
-.section{
-  margin-top: 18px;
-}
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin: 0 0 10px 0;
-}
-.section-title h2{
-  margin:0;
-  font-size:18px;
-  letter-spacing:-0.2px;
-}
-.hr{
-  height:1px;
-  background:var(--line);
-  margin: 16px 0;
-}
+.photo{margin:0;flex:0 1 320px;min-width:240px}
+.photo-frame{position:relative;padding:14px}
+.photo img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 20%}
+.photo-frame i{position:absolute;width:28px;height:28px;border:0 solid var(--accent)}
+.photo-frame i:nth-of-type(1){top:0;left:0;border-top-width:2px;border-left-width:2px}
+.photo-frame i:nth-of-type(2){top:0;right:0;border-top-width:2px;border-right-width:2px}
+.photo-frame i:nth-of-type(3){bottom:0;left:0;border-bottom-width:2px;border-left-width:2px}
+.photo-frame i:nth-of-type(4){bottom:0;right:0;border-bottom-width:2px;border-right-width:2px}
 
-/* two columns */
-.grid-2{
+/* ---------- Sections ---------- */
+.row{
   display:grid;
-  grid-template-columns: 1.3fr .9fr;
-  gap: 16px;
+  grid-template-columns:200px minmax(0,1fr);
+  gap:24px 48px;
+  margin-top:72px;padding-top:28px;
+  border-top:1px solid var(--line);
+  scroll-margin-top:var(--header-h);
 }
-@media (max-width: 860px){
-  .grid-2{grid-template-columns: 1fr;}
-  .brand{min-width:unset}
+.row-label{align-self:start;position:sticky;top:calc(var(--header-h) + 28px)}
+.num{display:block;font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--accent)}
+h2{margin:4px 0 0;font-size:28px;font-weight:600;letter-spacing:-.01em;color:var(--strong)}
+h3{margin:0;font-weight:600;color:var(--strong)}
+
+.job-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 24px}
+.job-head h3{font-size:22px}
+.dates{font-family:var(--mono);font-size:14px;letter-spacing:.06em;color:var(--accent)}
+.org{margin-top:2px;color:var(--muted)}
+.dash{margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--body)}
+.dash li{position:relative;padding-left:24px}
+.dash li::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:var(--accent)}
+
+.cards{display:flex;flex-wrap:wrap;gap:20px}
+.card{
+  flex:1 1 320px;min-width:0;padding:26px;
+  border:1px solid var(--line);background:var(--card);
+  transition:border-color .2s ease;
+}
+.card:hover{border-color:var(--line-strong)}
+.card.wide{flex-basis:100%}
+.card h3{font-size:21px;line-height:1.3}
+.card p{margin:12px 0 0;font-size:15.5px;color:var(--body)}
+.card.wide p{max-width:760px}
+.chips{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.chips li{padding:4px 10px;border:1px solid var(--line-strong);font-family:var(--mono);font-size:12px;color:var(--fg)}
+.chips li.hl{border-color:var(--accent);color:var(--accent)}
+
+.skills{margin:0;border:1px solid var(--line)}
+.skill{display:flex;flex-wrap:wrap;gap:8px 24px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.skill:last-child{border-bottom:0}
+.skill dt{flex:0 0 200px;padding-top:3px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.skill dd{flex:1 1 280px;min-width:0;margin:0;color:var(--fg)}
+
+.edu{display:flex;flex-wrap:wrap;gap:20px}
+.edu > div{flex:1 1 280px;min-width:0}
+.edu h3{font-size:20px}
+.edu .line{color:var(--muted)}
+.toeic{margin-top:14px;font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--accent)}
+.plain{margin:8px 0 0;padding:0;list-style:none;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+
+/* ---------- Title block footer ---------- */
+.titleblock{
+  margin:96px 0 48px;
+  border:1px solid var(--line-strong);
+  display:flex;flex-wrap:wrap;
+}
+.titleblock > div{flex:2 1 280px;padding:18px 22px;border-right:1px solid var(--line)}
+.titleblock > div:last-child{flex:1 1 140px;border-right:0}
+.tb-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tb-value{margin-top:2px;font-size:16px;color:var(--fg)}
+.tb-value.big{font-size:20px;font-weight:600;color:var(--strong)}
+.tb-value.mono{font-family:var(--mono)}
+.tb-value a{color:var(--accent)}
+.tb-value a:hover{text-decoration:underline}
+
+/* ---------- Motion (kept restrained) ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.seq > *{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 90ms)}
+.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .reveal{opacity:1;transform:none}
 }
 
-/* lists */
-ul{margin:10px 0 0 18px}
-li{margin:6px 0}
-
-/* project cards */
-.projects{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-.pcard{
-  border:1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px 16px;
-  background: #fff;
-}
-
-.pcard h3{
-  margin:0 0 8px 0;
-  font-size:16.5px;
-  letter-spacing:-0.2px;
-}
-
-.pmeta{
-  color:var(--muted);
-  font-size:16px;
-  margin-bottom: 10px;
-}
-.pgrid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-@media (max-width: 680px){
-  .pgrid{grid-template-columns:1fr}
-}
-
-.kv{
-  margin:0;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border:1px solid var(--line);
-  background:#fbfbfc;
-  font-size: 14.5px;
-  line-height: 1.55;
-}
-
-.kv b{
-  font-size:13.5px;
-  color:#475467;     /* 比 muted 深一點，更好讀 */
-  font-weight:700;
-  margin-bottom:6px;
-}
-
-/* tags */
-.tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
-.tag{
-  display:inline-block;
-  background:#f7f8fa;
-  border:1px solid var(--line);
-  padding:7px 12px;        /* 稍微厚一點 */
-  border-radius:999px;
-  font-size:14px;         /* ← 重點：字體放大 */
-  font-weight:500;        /* 微加粗，閱讀感提升 */
-  color:var(--accent2);
-}
-
-
-/* footer contact */
-.contact-line{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top: 8px;
-}
-.pill{
-  border:1px solid var(--line);
-  background:#fff;
-  padding:8px 10px;
-  border-radius: 999px;
-  font-size:13px;
-}
-.pill a{color:var(--accent); text-decoration:none}
-.pill a:hover{text-decoration:underline}
-
-/* anchor offset for sticky nav */
-.anchor{ scroll-margin-top: 96px; }
-/* --- Added: hero photo + icon buttons --- */
-.hero-left{
-  display:flex;
-  gap:16px;
-  align-items:center;
-}
-.profile-photo{
-  width:92px;
-  height:92px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1px solid var(--line);
-  background:#fff;
-}
-.linkedin-icon{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:48px;
-  height:48px;
-}
-
-.linkedin-icon img{
-  width:32px;
-  height:32px;
-}
-
-.linkedin-icon:hover{
-  transform: translateY(-1px);
-}
-
-.icon-btn:hover{
-  transform: translateY(-1px);
-  box-shadow:0 10px 25px rgba(16,24,40,.10);
-}
-@media (max-width: 520px){
-  .profile-photo{width:76px;height:76px;}
-}
-.nav-avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1px solid var(--line);
-}
-
-.link-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--accent);
-  text-decoration:none;
-  font-size:13px;
-  max-width:100%;
-}
-
-.link-chip:hover{
-  text-decoration:underline;
-  transform: translateY(-1px);
-  box-shadow:0 10px 25px rgba(16,24,40,.10);
-}
-
-/* =========================
-   Mobile fixes (Navbar + Hero actions)
-   ========================= */
-@media (max-width: 560px){
-
-  /* ---------- Navbar：避免選單被截斷 ---------- */
-  .nav-inner{
-    flex-wrap: wrap;            /* 讓 brand + links 必要時換行 */
-    gap: 10px;
+/* ---------- Tablet / mobile ---------- */
+@media (max-width:1000px){ .who-role{display:none} }
+@media (max-width:820px){
+  :root{--header-h:96px;--gutter:20px}
+  .bar{grid-template-columns:1fr auto;grid-template-rows:52px 44px;gap:0 12px}
+  .nav{
+    grid-column:1 / -1;grid-row:2;
+    gap:18px;overflow-x:auto;white-space:nowrap;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    align-items:center;font-size:12px;letter-spacing:.06em;
   }
-
-  /* 你目前 brand 裡有兩個 <b>，手機會很佔空間：先把第二個 b 隱藏 */
-  .brand b + b{                 /* 選到第二個 b */
-    display: none;
-  }
-
-  /* links 佔滿一整排，並允許左右滑（不會被截斷） */
-  .nav-links{
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 10px;
-    padding-bottom: 2px;
-  }
-  .nav-links::-webkit-scrollbar{ display:none; }
-
-  .nav a{
-    font-size: 14px;
-    font-weight: 650;
-    padding: 8px 10px;
-    white-space: nowrap;        /* 每個項目不換行 */
-  }
-
-  /* ---------- Hero：修正 LinkedIn icon 變單獨一行 ---------- */
-  .hero-top{
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .hero-left{
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* Hero 右側 actions 用 grid 排版：左 icon + 右 Download，同一排 */
-  .actions{
-    width: 100%;
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    grid-template-areas:
-      "li resume"
-      "email email"
-      "call call";
-    gap: 10px;
-    justify-items: stretch;
-  }
-
-  .linkedin-icon{
-    grid-area: li;
-    width: 56px;
-    height: 56px;
-    justify-self: start;
-  }
-  .linkedin-icon img{
-    width: 36px;
-    height: 36px;
-  }
-
-  .btn.primary{
-    grid-area: resume;
-    width: 100%;
-  }
-
-  /* Email / Call 讓它滿寬，變成好按的大按鈕 */
-  .btn[href^="mailto"]{ grid-area: email; width: 100%; }
-  .btn[href^="tel"]{    grid-area: call;  width: 100%; }
-
-  /* ---------- Hero 標題避免 (Simon Li) 被擠到很怪 ---------- */
-  h1{
-    font-size: 30px;
-    line-height: 1.15;
-  }
-}
-/* Prevent cards overflow on mobile */
-.pcard, .pgrid, .kv{
-  max-width:100%;
+  .actions .btn{flex:1 1 calc(50% - 6px);justify-content:center}
+  .actions .btn.primary{flex-basis:100%}
+  .nav::-webkit-scrollbar{display:none}
+  .hero{padding-top:48px;gap:36px}
+  .row{grid-template-columns:minmax(0,1fr);margin-top:56px;gap:16px}
+  .row-label{position:static}
+  .photo{flex-basis:100%;max-width:320px}
+  .name-zh{font-size:26px}
+  .role{font-size:21px}
+  .card{padding:22px}
+  .skill dt{flex-basis:100%}
 }
 
-.pgrid{
-  min-width:0;
-}
-
-.kv{
-  min-width:0;
-  overflow-wrap:anywhere;   /* 長字可強制斷行 */
-  word-break:break-word;
-}
-
-/* 讓 Selected Projects 的卡片在手機不會往外撐 */
-@media (max-width: 560px){
-  .card{ padding:18px; }      /* 手機卡片 padding 小一點 */
-  .pcard{ padding:14px; }
-  .pcard h3{
-    font-size:16px;
-    line-height:1.35;
-    overflow-wrap:anywhere;
+/* ---------- Print: always the paper theme, no chrome ---------- */
+@media print{
+  html[data-theme]{
+    --bg:#fff;--fg:#0A1A33;--strong:#06122A;--body:#23385A;--muted:#4A5D7A;
+    --line:rgba(10,26,51,.25);--line-strong:rgba(10,26,51,.5);--accent:#B45309;--card:transparent;
   }
+  .site-header{display:none}
+  .js .reveal{opacity:1;transform:none}
+  .row{break-inside:avoid}
 }
-html, body{ overflow-x:hidden; }
-
-.projects, .pcard, .pgrid{ min-width:0; max-width:100%; }
-
-
-
 </style>
 </head>
 
 <body>
 
-<!-- Top Navigation -->
-<div class="nav">
-  <div class="nav-inner">
-    <div class="brand">
-      <img class="nav-avatar" src="assert/images/profile.jpg" alt="Kuan-Yi Li">
-      <div>
-        <b>Kuan-Yi Li</b>
-      </div>
-    </div>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="who" href="#top" aria-label="Simon Li — back to top">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="who-name">Simon Li</span>
+      <span class="who-role">Digital IC Design Engineer</span>
+    </a>
 
-    <div class="nav-links" aria-label="Primary">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
+    <nav class="nav" aria-label="Primary">
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
       <a href="#education">Education</a>
-      <a href="#training">Training</a>
+    </nav>
+
+    <div class="tools">
+      <a class="btn-resume" href="assets/files/Kuan-Yi-Li-Resume.pdf" download>Resume &darr;</a>
+      <button class="theme-toggle" type="button" aria-label="Switch to light theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2z"/>
+        </svg>
+      </button>
     </div>
   </div>
-</div>
+</header>
 
-<div class="wrap">
+<main id="top" class="wrap">
 
   <!-- Hero -->
-  <div class="card hero">
-    <div class="hero-top">
-      <div class="hero-left">
-        <img class="profile-photo" src="assert/images/profile.jpg" alt="Kuan-Yi Li">
-      
-        <div>
-          <h1>Kuan-Yi Li <span style="color:var(--muted);font-weight:600;font-size:18px">(Simon Li)</span></h1>
-          <p class="subtitle">
-            Digital IC Design Engineer @ SCT Ltd. Taiwan Branch
-          </p>
-      
-          <div class="badges">
-            <span class="badge"><span class="dot"></span>RTL Design Flow</span>
-            <span class="badge"><span class="dot"></span>Verilog</span>
-            <span class="badge"><span class="dot"></span>Timing-aware Design</span>
-            <span class="badge"><span class="dot"></span>TOEIC 890</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <a class="linkedin-icon"
-           href="https://www.linkedin.com/in/simon-li-014084275/"
-           target="_blank" rel="noreferrer" aria-label="LinkedIn">
-          <img src="assert/images/linkedin.png" alt="LinkedIn">
-        </a>
-      
-        <a class="btn primary"
-           href="assert/files/Kuan-Yi Li English Resume.pdf"
-           download>
-          Download Resume
-        </a>
-      
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-text seq">
+      <h1 style="--i:0">Simon Li</h1>
+      <div class="name-zh" lang="zh-Hant" style="--i:1">李冠毅</div>
+      <p class="role" style="--i:2">Digital IC Design Engineer</p>
+      <p class="lede" style="--i:3">1+ year of hands-on experience in ASIC front-end development &mdash; RTL design, synthesis, timing analysis, gate-level simulation (GLS), and mixed-signal integration.</p>
+      <p class="sub" style="--i:4">Working on MicroLED display driver ICs at SiliconCore Technology Taiwan Branch. Interested in digital IP integration, digital interface development, and high-performance, scalable digital systems.</p>
+      <div class="actions" style="--i:5">
+        <a class="btn primary" href="assets/files/Kuan-Yi-Li-Resume.pdf" download>Download Resume &darr;</a>
         <a class="btn" href="mailto:s51511830@gmail.com">Email</a>
-        <a class="btn" href="tel:+886952765169">Call</a>
+        <a class="btn" href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noopener noreferrer">LinkedIn &nearr;</a>
       </div>
     </div>
-    <div class="smallnote">
-      Available for roles in Digital IC Design / RTL / Timing-aware design.
-    </div>
-  </div>
 
-  <!-- About + Quick Facts -->
-  <div id="about" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>💼 About</h2></div>
-      <p style="margin:0">
-        Digital IC Design Engineer with a Master’s degree in Electrical Engineering.
-        My work focuses on RTL-based digital IC design and AI-driven hardware acceleration, with hands-on experience
-        translating algorithm-level concepts into hardware-efficient architectures.
-      </p>
-      <p style="margin:12px 0 0 0">
-        Familiar with Verilog RTL design, functional simulation, synthesis, and physical design flows, with solid understanding
-        of timing-aware design and system-level integration.
-      </p>
-    </div>
-  </div>
-
-  <!-- Skills -->
-  <div id="skills" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>💻 Technical Skills</h2></div>
-
-      <div class="tags">
-        <span class="tag">Verilog</span>
-        <span class="tag">RTL Development</span>
-        <span class="tag">Timing-aware Design</span>
-        <span class="tag">ModelSim</span>
-        <span class="tag">Synopsys Design Compiler</span>
-        <span class="tag">Synopsys IC Compiler</span>
-        <span class="tag">Physical Design Flow</span>
-        <span class="tag">Linux</span>
-        <span class="tag">MATLAB</span>
-        <span class="tag">Deep Reinforcement Learning</span>
+    <figure class="photo seq">
+      <div class="photo-frame" style="--i:3">
+        <img src="assets/images/profile.jpg" width="800" height="1005" alt="Portrait of Simon Li" fetchpriority="high">
+        <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
       </div>
-    </div>
-  </div>
+    </figure>
+  </section>
 
   <!-- Experience -->
-  <div id="experience" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>🧩 Professional Experience</h2></div>
-
-        <div style="display:flex;align-items:center;gap:10px">
-          <img src="assert/images/siliconcore.jpg" style="height:28px">
-          <b>SCT Ltd. Taiwan Branch — Digital IC Design Engineer</b>
-        </div>
-        
-      <div class="pmeta">2025.10 ~ Present</div>
-
-      <ul>
-        <li>Design and modify RTL modules using Verilog for digital IC systems</li>
-        <li>Perform waveform debugging and functional verification in Linux environment</li>
-        <li>Support timing-aware RTL development and synthesis-related issue analysis</li>
-        <li>Participate in internal bring-up and design validation flows</li>
-        <li>Collaborate with cross-functional teams for feature integration</li>
+  <section id="experience" class="row">
+    <div class="row-label">
+      <span class="num">01</span>
+      <h2>Experience</h2>
+    </div>
+    <div class="row-body reveal">
+      <div class="job-head">
+        <h3>Digital IC Design Engineer</h3>
+        <div class="dates">2025.10 &ndash; Present</div>
+      </div>
+      <div class="org">SiliconCore Technology Taiwan Branch</div>
+      <ul class="dash">
+        <li>Designed and integrated RTL modules for MicroLED display driver ICs in Verilog, covering RTL implementation, synthesis, timing analysis, GLS, and tape-out support.</li>
+        <li>Developed and ran full-chip gate-level simulation flows with Cadence Xcelium for mixed-signal ASIC verification.</li>
+        <li>Debugged GLS issues &mdash; X propagation, reset synchronization, timing races, netlist connectivity &mdash; through waveform analysis.</li>
+        <li>Worked with analog/schematic, FPGA, and software teams on digital IP integration and mixed-signal hierarchy verification.</li>
+        <li>Supported tape-out by resolving design issues and improving chip robustness through pre-silicon verification and gate-level debugging.</li>
       </ul>
     </div>
-  </div>
+  </section>
 
   <!-- Projects -->
-  <div id="projects" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>🚀 Selected Projects</h2></div>
-
-      <div class="projects">
-
-        <div class="pcard">
-          <h3>Fast-Convergent Deep Reinforcement Learning for Object-Location Prediction (FCDQN)</h3>
-          <div class="pmeta">AI Algorithm (DRL) + Verilog Accelerator · DC/ICC · TSMC 90nm · MATLAB</div>
-
-          <div class="pgrid">
-            <p class="kv"><b>Impact</b>~76% fewer training iterations while maintaining accuracy</p>
-            <p class="kv"><b>Implementation</b>Verilog RTL, verified with ModelSim</p>
-            <p class="kv"><b>Flow</b>Synthesis (DC), APR/DRC (ICC), STA under 90nm</p>
-            <p class="kv"><b>Efficiency</b>~75% energy savings & ~20% area reduction vs prior DQN accelerators</p>
-          </div>
-        </div>
-
-        <div class="pcard">
-          <h3>Object-Location Prediction Based on CIE Color Difference (OLP-CIE)</h3>
-          <div class="pmeta">CIEDE2000-based lightweight preprocessor · IEEE GCCE 2023</div>
-
-          <div class="pgrid">
-            <p class="kv"><b>Accuracy</b>85.5% location accuracy, 90.4% color identification accuracy</p>
-            <p class="kv"><b>Outcome</b>Presented at IEEE GCCE 2023 (Nara, Japan)</p>
-          </div>
-
-          <div style="margin-top:10px">
-            <a class="link-chip" href="https://ieeexplore.ieee.org/document/10315341" target="_blank" rel="noreferrer">
-              ↗ View on IEEE Xplore
-            </a>
-          </div>
-        </div>
-      </div>
+  <section id="projects" class="row">
+    <div class="row-label">
+      <span class="num">02</span>
+      <h2>Projects</h2>
     </div>
-  </div>
+    <div class="cards">
+      <article class="card reveal">
+        <h3>MicroLED Test Chip &mdash; RTL Design &amp; Implementation</h3>
+        <p>A 256-bit multi-mode Pattern Generator and a configuration register subsystem with control logic, integrated into the top-level hierarchy. Took the design through RTL implementation, functional verification, and logic synthesis in Cadence Genus.</p>
+        <ul class="chips">
+          <li>Verilog</li><li>Genus</li><li class="hl">125 MHz &middot; WNS +3.2 ns</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <h3>MicroLED Test Chip &mdash; Full-Chip Gate-Level Verification</h3>
+        <p>Built the gate-level simulation environment in Cadence Xcelium, fixed X propagation across engine signal paths, and set up waveform-based pass/fail criteria. Separated zero-delay GLS artifacts from real design defects, and found incomplete reset coverage and timing races at schematic level.</p>
+        <ul class="chips">
+          <li>Xcelium</li><li>GLS</li><li>Mixed-signal</li>
+        </ul>
+      </article>
+
+      <article class="card wide reveal">
+        <h3>Fast-Convergent Deep Reinforcement Learning Accelerator</h3>
+        <p>Developed the DRL algorithm and its Verilog accelerator architecture, then carried it through the full RTL-to-GDSII flow in TSMC 90nm &mdash; RTL verification, synthesis, APR, STA, and physical verification. Presented at IEEE GCCE 2023 in Nara, Japan.</p>
+        <ul class="chips">
+          <li>Master&rsquo;s research</li><li>TSMC 90nm</li><li>RTL-to-GDSII</li><li class="hl">~75% energy &darr;</li><li class="hl">~20% area &darr;</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="row">
+    <div class="row-label">
+      <span class="num">03</span>
+      <h2>Skills</h2>
+    </div>
+    <dl class="skills reveal">
+      <div class="skill"><dt>ASIC front-end &amp; integration</dt><dd>RTL Design, Verilog, Digital IP Integration, Gate-Level Simulation (GLS), Functional Verification, Mixed-Signal Integration</dd></div>
+      <div class="skill"><dt>Design implementation</dt><dd>Logic Synthesis, Timing Analysis, Static Timing Analysis (STA), Timing Optimization, Tape-out Support</dd></div>
+      <div class="skill"><dt>EDA tools</dt><dd>Cadence Xcelium, Cadence Genus, Cadence Innovus, Synopsys Design Compiler, Synopsys IC Compiler, ModelSim, Linux</dd></div>
+      <div class="skill"><dt>Programming</dt><dd>Verilog, MATLAB</dd></div>
+    </dl>
+  </section>
 
   <!-- Education -->
-  <div id="education" class="anchor section">
-    <div class="card">
-      <div class="section-title"><h2>🎓 Education</h2></div>
-
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <img src="assert/images/yzu.png" style="height:36px">
-        <b>Yuan Ze University</b>
+  <section id="education" class="row">
+    <div class="row-label">
+      <span class="num">04</span>
+      <h2>Education</h2>
+    </div>
+    <div class="edu reveal">
+      <div>
+        <h3>Yuan Ze University</h3>
+        <div class="line" style="margin-top:4px">M.S. in Electrical Engineering</div>
+        <div class="line">B.S. in Electrical Engineering</div>
+        <div class="toeic">TOEIC 890</div>
       </div>
-      
-      <div class="pgrid">
-        <p class="kv">M.S. in Electrical Engineering</p>
-        <p class="kv">B.S. in Electrical Engineering</p>
+      <div>
+        <h3>Training &amp; conferences</h3>
+        <ul class="plain">
+          <li>TSRI &mdash; Cell-Based IC Physical Design and Verification with IC Compiler (21 hr)</li>
+          <li>IEEE GCCE 2023 &mdash; Nara, Japan</li>
+          <li>CASA 2024 &mdash; Taoyuan, Taiwan</li>
+        </ul>
       </div>
     </div>
-  </div>
+  </section>
 
-<!-- Training -->
-<div id="training" class="anchor section">
-  <div class="card">
-    <div class="section-title"><h2>📚 Certifications & Training</h2></div>
+  <!-- Title block -->
+  <footer class="titleblock reveal">
+    <div>
+      <div class="tb-label">Drawn by</div>
+      <div class="tb-value big">Simon Li (<span lang="zh-Hant">李冠毅</span>)</div>
+    </div>
+    <div>
+      <div class="tb-label">Title</div>
+      <div class="tb-value">Digital IC Design Engineer</div>
+    </div>
+    <div>
+      <div class="tb-label">Contact</div>
+      <div class="tb-value"><a href="mailto:s51511830@gmail.com">s51511830@gmail.com</a></div>
+    </div>
+    <div>
+      <div class="tb-label">Rev.</div>
+      <div class="tb-value mono">2026.11</div>
+    </div>
+  </footer>
 
-    <ul>
-      <li>TSRI — Cell-Based IC Physical Design and Verification with IC Compiler (21hr)</li>
-      <li>2023 IEEE 12th Global Conference on Consumer Electronics (GCCE 2023) — Nara, Japan</li>
-      <li>2024 International Automatic Control Conference (CASA 2024) — Taoyuan, Taiwan</li>
-    </ul>
-  </div>
-</div>
-
-<div style="text-align:center;color:#98a2b3;font-size:12px;margin-top:40px">
-  © <span id="y"></span> Kuan-Yi Li · Built with GitHub Pages
-</div>
-
-</div>
+</main>
 
 <script>
-  // Auto offset for fixed navbar (desktop + mobile)
-  function syncNavOffset(){
-    const nav = document.querySelector('.nav');
-    if(!nav) return;
-    document.body.style.paddingTop = nav.offsetHeight + 'px';
-  }
-  window.addEventListener('load', syncNavOffset);
-  window.addEventListener('resize', syncNavOffset);
+(function () {
+  var root = document.documentElement;
 
-  document.getElementById("y").textContent = new Date().getFullYear();
+  /* Theme toggle */
+  var btn = document.querySelector('.theme-toggle');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  function sync() {
+    var t = root.getAttribute('data-theme');
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  sync();
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    if (meta) meta.setAttribute('content', next === 'light' ? '#F3EFE6' : '#0A1A33');
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    sync();
+  });
+
+  /* Fade-in on scroll */
+  var items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var reveal = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    [].forEach.call(items, function (el) { reveal.observe(el); });
+  } else {
+    [].forEach.call(items, function (el) { el.classList.add('in'); });
+  }
+
+  /* Highlight the current section in the header nav */
+  var links = [].slice.call(document.querySelectorAll('.nav a'));
+  function setActive(id) {
+    links.forEach(function (a) {
+      var on = a.getAttribute('href') === '#' + id;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+  var header = document.querySelector('.site-header');
+  var secs = [].slice.call(document.querySelectorAll('.row[id]'));
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    var line = header.offsetHeight + window.innerHeight * 0.3;
+    var cur = '';  /* nothing is "current" while the hero is on screen */
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= line) cur = s.id; });
+    /* the last section can't reach the line on a short page, so claim it at the bottom */
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+      cur = secs[secs.length - 1].id;
+    }
+    setActive(cur);
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+  window.addEventListener('resize', spy);
+  spy();
+})();
 </script>
 
 </body>
