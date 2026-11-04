@@ -52,6 +52,7 @@
 [data-theme="dark"]{
   color-scheme:dark;
   --bg:#0A1A33;
+  --bg-rgb:10,26,51;
   --fg:#E6EEFF;
   --strong:#FFFFFF;
   --body:#C9D6EE;
@@ -61,12 +62,13 @@
   --accent:#FFB84D;
   --on-accent:#0A1A33;
   --card:rgba(255,255,255,.025);
-  --header-bg:rgba(10,26,51,.92);
+  --header-bg:rgba(var(--bg-rgb),.92);
 }
 /* Light: drawing on paper */
 [data-theme="light"]{
   color-scheme:light;
   --bg:#F3EFE6;
+  --bg-rgb:243,239,230;
   --fg:#0A1A33;
   --strong:#06122A;
   --body:#23385A;
@@ -76,7 +78,7 @@
   --accent:#B45309;
   --on-accent:#F3EFE6;
   --card:rgba(255,255,255,.55);
-  --header-bg:rgba(243,239,230,.92);
+  --header-bg:rgba(var(--bg-rgb),.92);
 }
 
 *{box-sizing:border-box}
@@ -103,7 +105,13 @@ img{max-width:100%}
   height:var(--header-h);
   background:var(--header-bg);
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--line);
+}
+/* soft fade under the bar instead of a hard edge */
+.site-header::after{
+  content:"";
+  position:absolute;left:0;right:0;top:100%;height:28px;
+  background:linear-gradient(to bottom,var(--header-bg),rgba(var(--bg-rgb),0));
+  pointer-events:none;
 }
 .bar{
   height:100%;
