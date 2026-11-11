@@ -17,6 +17,22 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Simon Li",
+  "alternateName": ["Kuan-Yi Li", "李冠毅"],
+  "jobTitle": "Digital IC Design Engineer",
+  "url": "https://kuanyi-li.github.io/",
+  "image": "https://kuanyi-li.github.io/assets/images/profile.jpg",
+  "worksFor": { "@type": "Organization", "name": "SiliconCore Technology Taiwan Branch" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "Yuan Ze University" },
+  "knowsAbout": ["ASIC design", "RTL design", "Verilog", "Logic synthesis", "Static timing analysis", "Gate-level simulation"],
+  "sameAs": ["https://www.linkedin.com/in/simon-li-014084275/"]
+}
+</script>
+
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="48x48">
 
@@ -30,6 +46,11 @@
     try { t = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'; } catch (e) {}
     document.documentElement.setAttribute('data-theme', t);
     document.documentElement.className = 'js';
+    var l = null;
+    try { l = localStorage.getItem('lang'); } catch (e) {}
+    if (l !== 'zh' && l !== 'en') l = /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+    document.documentElement.setAttribute('data-lang', l);
+    if (l === 'zh') document.documentElement.lang = 'zh-Hant';
     var m = document.querySelector('meta[name="theme-color"]');
     if (m) m.setAttribute('content', t === 'light' ? '#F3EFE6' : '#0A1A33');
   })();
@@ -82,6 +103,10 @@
 }
 
 *{box-sizing:border-box}
+/* Language: English is the default; .zh blocks show only in Chinese mode */
+html:not([data-lang="zh"]) .zh{display:none!important}
+html[data-lang="zh"] .en{display:none!important}
+.print-only{display:none}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;
@@ -93,7 +118,7 @@ body{
   transition:background-color .25s ease,color .25s ease;
 }
 a{color:inherit;text-decoration:none}
-a:hover{color:var(--accent)}
+@media (hover:hover){ a:hover{color:var(--accent)} }
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 img{max-width:100%}
 
@@ -127,7 +152,7 @@ img{max-width:100%}
 .who-role{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
 .nav{display:flex;gap:28px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .nav a{padding:6px 0;box-shadow:inset 0 -1px 0 transparent;transition:color .15s ease,box-shadow .15s ease}
-.nav a:hover{color:var(--strong)}
+@media (hover:hover){ .nav a:hover{color:var(--strong)} }
 .nav a.active{color:var(--strong);box-shadow:inset 0 -1px 0 var(--accent)}
 .tools{display:flex;align-items:center;gap:10px;justify-self:end}
 .btn-resume{
@@ -137,6 +162,16 @@ img{max-width:100%}
   transition:border-color .15s ease,color .15s ease;
 }
 .btn-resume:hover{border-color:var(--accent);color:var(--accent)}
+/* the hero already has a resume button, so this one appears once it scrolls away */
+.js .btn-resume{opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease,border-color .15s ease,color .15s ease}
+.js .btn-resume.show{opacity:1;visibility:visible}
+.lang-toggle{
+  min-width:38px;height:38px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--line-strong);color:var(--fg);cursor:pointer;
+  font-family:var(--sans);font-size:13px;font-weight:500;line-height:1;
+  transition:border-color .15s ease,color .15s ease;
+}
+.lang-toggle:hover{border-color:var(--accent);color:var(--accent)}
 .theme-toggle{
   width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
   background:transparent;border:1px solid var(--line-strong);color:var(--fg);cursor:pointer;padding:0;
@@ -207,16 +242,32 @@ h3{margin:0;font-weight:600;color:var(--strong)}
 
 .cards{display:flex;flex-wrap:wrap;gap:20px}
 .card{
+  position:relative;display:flex;flex-direction:column;
   flex:1 1 320px;min-width:0;padding:26px;
   border:1px solid var(--line);background:var(--card);
   transition:border-color .2s ease;
 }
 .card:hover{border-color:var(--line-strong)}
+/* registration marks on hover, echoing the photo frame */
+.card::after{
+  content:"";position:absolute;inset:-1px;pointer-events:none;opacity:0;transition:opacity .2s ease;
+  background:
+    linear-gradient(var(--accent),var(--accent)) left top/16px 2px,
+    linear-gradient(var(--accent),var(--accent)) left top/2px 16px,
+    linear-gradient(var(--accent),var(--accent)) right top/16px 2px,
+    linear-gradient(var(--accent),var(--accent)) right top/2px 16px,
+    linear-gradient(var(--accent),var(--accent)) left bottom/16px 2px,
+    linear-gradient(var(--accent),var(--accent)) left bottom/2px 16px,
+    linear-gradient(var(--accent),var(--accent)) right bottom/16px 2px,
+    linear-gradient(var(--accent),var(--accent)) right bottom/2px 16px;
+  background-repeat:no-repeat;
+}
+@media (hover:hover){ .card:hover::after{opacity:1} }
 .card.wide{flex-basis:100%}
 .card h3{font-size:21px;line-height:1.3}
 .card p{margin:12px 0 0;font-size:15.5px;color:var(--body)}
 .card.wide p{max-width:760px}
-.chips{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.chips{margin:auto 0 0;padding:18px 0 0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
 .chips li{padding:4px 10px;border:1px solid var(--line-strong);font-family:var(--mono);font-size:12px;color:var(--fg)}
 .chips li.hl{border-color:var(--accent);color:var(--accent)}
 
@@ -247,6 +298,21 @@ h3{margin:0;font-weight:600;color:var(--strong)}
 .tb-value.mono{font-family:var(--mono)}
 .tb-value a{color:var(--accent)}
 .tb-value a:hover{text-decoration:underline}
+.tb-links{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px}
+.tb-links a{display:inline-flex;align-items:center;min-height:32px;color:var(--fg);border-bottom:1px solid transparent}
+.tb-links a:hover{color:var(--accent)}
+#contact{scroll-margin-top:calc(var(--header-h) + 24px)}
+
+/* Chinese typography: no tight tracking, sans for the small labels */
+[data-lang="zh"] h1{letter-spacing:0;line-height:1.1}
+[data-lang="zh"] h2{letter-spacing:.02em}
+[data-lang="zh"] .name-zh{letter-spacing:0}
+[data-lang="zh"] .nav,
+[data-lang="zh"] .who-role,
+[data-lang="zh"] .btn-resume,
+[data-lang="zh"] .skill dt,
+[data-lang="zh"] .tb-label{font-family:var(--sans);letter-spacing:.06em;font-size:13px}
+[data-lang="zh"] body{line-height:1.75}
 
 /* ---------- Motion (kept restrained) ---------- */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -268,8 +334,14 @@ h3{margin:0;font-weight:600;color:var(--strong)}
     grid-column:1 / -1;grid-row:2;
     gap:18px;overflow-x:auto;white-space:nowrap;
     scrollbar-width:none;-webkit-overflow-scrolling:touch;
-    align-items:center;font-size:12px;letter-spacing:.06em;
+    align-items:stretch;font-size:12px;letter-spacing:.06em;
   }
+  /* 44px tap targets; the active underline sits just under the label */
+  .nav{align-self:stretch}
+  .nav a{display:inline-flex;align-items:center;min-height:44px;padding:0;box-shadow:none!important;background:linear-gradient(var(--accent),var(--accent)) no-repeat left calc(100% - 9px)/0 1px}
+  .nav a.active{background-size:100% 1px}
+  .lang-toggle{min-width:36px;height:36px}
+  .tools{gap:8px}
   .actions .btn{flex:1 1 calc(50% - 6px);justify-content:center}
   .actions .btn.primary{flex-basis:100%}
   .nav::-webkit-scrollbar{display:none}
@@ -314,6 +386,13 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   .tb-value.big{font-size:18px}
 }
 
+@media (max-width:380px){
+  .who{gap:8px}
+  .who-role{font-size:10.5px}
+  .tools{gap:6px}
+  .btn-resume{padding:0 8px}
+}
+
 /* Larger tablets keep the same layout with a bigger photo */
 @media (min-width:561px) and (max-width:820px){
   .hero{grid-template-columns:minmax(0,1fr) 168px}
@@ -323,15 +402,66 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   h1{font-size:64px}
 }
 
-/* ---------- Print: always the paper theme, no chrome ---------- */
+/* ---------- Print: paper theme, compact, no chrome (about two A4 pages) ---------- */
 @media print{
+  @page{margin:14mm}
   html[data-theme]{
     --bg:#fff;--fg:#0A1A33;--strong:#06122A;--body:#23385A;--muted:#4A5D7A;
     --line:rgba(10,26,51,.25);--line-strong:rgba(10,26,51,.5);--accent:#B45309;--card:transparent;
   }
-  .site-header{display:none}
+  html,body{background:#fff}
+  body{font-size:12.5px;line-height:1.5}
+  html[data-lang="zh"] body{line-height:1.6}
+  .site-header,.actions,.tb-links{display:none!important}
+  .print-only{display:block}
+  .wrap{max-width:none;padding:0}
+  .seq > *{animation:none}
   .js .reveal{opacity:1;transform:none}
-  .row{break-inside:avoid}
+
+  .hero{
+    padding:0 0 4px;
+    grid-template-columns:minmax(0,1fr) 104px;
+    grid-template-rows:auto auto;
+    grid-template-areas:"head photo" "body body";
+    column-gap:20px;
+  }
+  .hero-head{align-self:center}
+  h1{font-size:40px}
+  .name-zh{font-size:16px;margin-top:6px}
+  .role{font-size:15px;margin-top:10px}
+  .photo{width:104px;justify-self:end}
+  .photo-frame{padding:6px}
+  .photo-frame i{width:12px;height:12px}
+  .lede{margin-top:14px;font-size:13.5px;max-width:none}
+  .sub{margin-top:6px;font-size:12.5px;max-width:none}
+
+  .row{grid-template-columns:104px minmax(0,1fr);gap:6px 20px;margin-top:18px;padding-top:12px}
+  .row-label{position:static}
+  h2{font-size:17px;margin-top:2px}
+  .num{font-size:11px}
+  .job-head h3{font-size:15px}
+  .dates{font-size:11.5px}
+  .dash{margin-top:10px;gap:6px}
+  .cards{gap:10px}
+  .card{padding:12px 14px}
+  .card::after{display:none}
+  .card h3{font-size:14px}
+  .card p,.card.wide p{font-size:12px;margin-top:6px;max-width:none}
+  .chips{padding-top:10px;gap:6px}
+  .chips li{font-size:10.5px;padding:2px 7px}
+  .skill{padding:9px 14px;gap:4px 16px}
+  .skill dt{flex:0 0 150px;font-size:10.5px}
+  .edu h3{font-size:14px}
+  .toeic{margin-top:6px;font-size:11.5px}
+  .plain{margin-top:4px;gap:2px}
+  .titleblock{display:flex;flex-wrap:nowrap;margin:20px 0 0}
+  .titleblock > div{order:0!important;flex:1 1 auto;padding:10px 14px;border-bottom:0;border-right:1px solid var(--line)}
+  .titleblock > div:last-child{border-right:0}
+  .tb-value,.tb-value.big{font-size:13px}
+  .tb-label{font-size:9.5px}
+
+  .card,.dash li,.skill,.edu > div,.titleblock,.job-head{break-inside:avoid}
+  h2,h3{break-after:avoid}
 }
 </style>
 </head>
@@ -343,20 +473,21 @@ h3{margin:0;font-weight:600;color:var(--strong)}
     <a class="who" href="#top" aria-label="Simon Li — back to top">
       <span class="mark" aria-hidden="true"></span>
       <span class="who-text">
-        <span class="who-name">Simon Li</span>
-        <span class="who-role">Digital IC Design Engineer</span>
+        <span class="who-name"><span class="en">Simon Li</span><span class="zh" lang="zh-Hant">李冠毅</span></span>
+        <span class="who-role"><span class="en">Digital IC Design Engineer</span><span class="zh" lang="zh-Hant">數位 IC 設計工程師</span></span>
       </span>
     </a>
 
     <nav class="nav" aria-label="Primary">
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#education">Education</a>
+      <a href="#experience"><span class="en">Experience</span><span class="zh" lang="zh-Hant">經歷</span></a>
+      <a href="#projects"><span class="en">Projects</span><span class="zh" lang="zh-Hant">專案</span></a>
+      <a href="#skills"><span class="en">Skills</span><span class="zh" lang="zh-Hant">技能</span></a>
+      <a href="#education"><span class="en">Education</span><span class="zh" lang="zh-Hant">學歷</span></a>
     </nav>
 
     <div class="tools">
-      <a class="btn-resume" href="assets/files/Kuan-Yi-Li-Resume.pdf" download>Resume &darr;</a>
+      <a class="btn-resume" href="assets/files/Kuan-Yi-Li-Resume.pdf" download><span class="en">Resume &darr;</span><span class="zh" lang="zh-Hant">履歷 &darr;</span></a>
+      <button class="lang-toggle" type="button" aria-label="切換為中文"><span class="en" lang="zh-Hant">中</span><span class="zh" lang="en">EN</span></button>
       <button class="theme-toggle" type="button" aria-label="Switch to light theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"/>
@@ -375,17 +506,19 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   <!-- Hero -->
   <section class="hero" aria-label="Introduction">
     <div class="hero-head seq">
-      <h1 style="--i:0">Simon Li</h1>
-      <div class="name-zh" lang="zh-Hant" style="--i:1">李冠毅</div>
-      <p class="role" style="--i:2">Digital IC Design Engineer</p>
+      <h1 style="--i:0"><span class="en">Simon Li</span><span class="zh" lang="zh-Hant">李冠毅</span></h1>
+      <div class="name-zh" style="--i:1"><span class="en" lang="zh-Hant">李冠毅</span><span class="zh" lang="en">Simon Li</span></div>
+      <p class="role" style="--i:2"><span class="en">Digital IC Design Engineer</span><span class="zh" lang="zh-Hant">數位 IC 設計工程師</span></p>
     </div>
 
     <div class="hero-body seq">
-      <p class="lede" style="--i:3">1+ year of hands-on experience in ASIC front-end development &mdash; RTL design, synthesis, timing analysis, gate-level simulation (GLS), and mixed-signal integration.</p>
-      <p class="sub" style="--i:4">Working on MicroLED display driver ICs at SiliconCore Technology Taiwan Branch. Interested in digital IP integration, digital interface development, and high-performance, scalable digital systems.</p>
+      <p class="lede en" style="--i:3">1+ year of hands-on experience in ASIC front-end development &mdash; RTL design, synthesis, timing analysis, gate-level simulation (GLS), and mixed-signal integration.</p>
+      <p class="lede zh" lang="zh-Hant" style="--i:3">一年多的 ASIC 前段設計經驗，做過 RTL 設計、合成、時序分析、gate-level simulation (GLS) 與 mixed-signal 整合。</p>
+      <p class="sub en" style="--i:4">Working on MicroLED display driver ICs at SiliconCore Technology Taiwan Branch. Interested in digital IP integration, digital interface development, and high-performance, scalable digital systems.</p>
+      <p class="sub zh" lang="zh-Hant" style="--i:4">目前在 SiliconCore Technology 台灣分公司負責 MicroLED 顯示驅動 IC，對數位 IP 整合、數位介面開發，以及高效能、可擴充的數位系統特別有興趣。</p>
       <div class="actions" style="--i:5">
-        <a class="btn primary" href="assets/files/Kuan-Yi-Li-Resume.pdf" download>Download Resume &darr;</a>
-        <a class="btn" href="mailto:s51511830@gmail.com">Email</a>
+        <a class="btn primary" href="assets/files/Kuan-Yi-Li-Resume.pdf" download><span class="en">Download Resume &darr;</span><span class="zh" lang="zh-Hant">下載履歷 &darr;</span></a>
+        <a class="btn js-mail" href="#contact" data-u="s51511830" data-d="gmail.com">Email</a>
         <a class="btn" href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noopener noreferrer">LinkedIn &nearr;</a>
       </div>
     </div>
@@ -402,20 +535,25 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   <section id="experience" class="row">
     <div class="row-label">
       <span class="num">01</span>
-      <h2>Experience</h2>
+      <h2><span class="en">Experience</span><span class="zh" lang="zh-Hant">經歷</span></h2>
     </div>
     <div class="row-body reveal">
       <div class="job-head">
-        <h3>Digital IC Design Engineer</h3>
-        <div class="dates">2025.10 &ndash; Present</div>
+        <h3><span class="en">Digital IC Design Engineer</span><span class="zh" lang="zh-Hant">數位 IC 設計工程師</span></h3>
+        <div class="dates">2025.10 &ndash; <span class="en">Present</span><span class="zh" lang="zh-Hant">至今</span></div>
       </div>
-      <div class="org">SiliconCore Technology Taiwan Branch</div>
+      <div class="org"><span class="en">SiliconCore Technology Taiwan Branch</span><span class="zh" lang="zh-Hant">SiliconCore Technology 台灣分公司</span></div>
       <ul class="dash">
-        <li>Designed and integrated RTL modules for MicroLED display driver ICs in Verilog, covering RTL implementation, synthesis, timing analysis, GLS, and tape-out support.</li>
-        <li>Developed and ran full-chip gate-level simulation flows with Cadence Xcelium for mixed-signal ASIC verification.</li>
-        <li>Debugged GLS issues &mdash; X propagation, reset synchronization, timing races, netlist connectivity &mdash; through waveform analysis.</li>
-        <li>Worked with analog/schematic, FPGA, and software teams on digital IP integration and mixed-signal hierarchy verification.</li>
-        <li>Supported tape-out by resolving design issues and improving chip robustness through pre-silicon verification and gate-level debugging.</li>
+        <li class="en">Designed and integrated RTL modules for MicroLED display driver ICs in Verilog, covering RTL implementation, synthesis, timing analysis, GLS, and tape-out support.</li>
+        <li class="zh" lang="zh-Hant">以 Verilog 設計並整合 MicroLED 顯示驅動 IC 的 RTL 模組，從 RTL 實作、合成、時序分析、GLS 一路做到 tape-out 支援。</li>
+        <li class="en">Developed and ran full-chip gate-level simulation flows with Cadence Xcelium for mixed-signal ASIC verification.</li>
+        <li class="zh" lang="zh-Hant">用 Cadence Xcelium 建立並執行 full-chip gate-level simulation 流程，支援 mixed-signal ASIC 驗證。</li>
+        <li class="en">Debugged GLS issues &mdash; X propagation, reset synchronization, timing races, netlist connectivity &mdash; through waveform analysis.</li>
+        <li class="zh" lang="zh-Hant">透過波形分析排除 GLS 問題，包含 X propagation、reset 同步、timing race 與 netlist 連接錯誤。</li>
+        <li class="en">Worked with analog/schematic, FPGA, and software teams on digital IP integration and mixed-signal hierarchy verification.</li>
+        <li class="zh" lang="zh-Hant">與類比/電路、FPGA、軟體團隊合作，完成數位 IP 整合與 mixed-signal 階層驗證。</li>
+        <li class="en">Supported tape-out by resolving design issues and improving chip robustness through pre-silicon verification and gate-level debugging.</li>
+        <li class="zh" lang="zh-Hant">Tape-out 前透過 pre-silicon 驗證與 gate-level 除錯解決設計問題，提升晶片的穩定性。</li>
       </ul>
     </div>
   </section>
@@ -424,30 +562,33 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   <section id="projects" class="row">
     <div class="row-label">
       <span class="num">02</span>
-      <h2>Projects</h2>
+      <h2><span class="en">Projects</span><span class="zh" lang="zh-Hant">專案</span></h2>
     </div>
     <div class="cards">
       <article class="card reveal">
-        <h3>MicroLED Test Chip &mdash; RTL Design &amp; Implementation</h3>
-        <p>A 256-bit multi-mode Pattern Generator and a configuration register subsystem with control logic, integrated into the top-level hierarchy. Took the design through RTL implementation, functional verification, and logic synthesis in Cadence Genus.</p>
+        <h3><span class="en">MicroLED Test Chip &mdash; RTL Design &amp; Implementation</span><span class="zh" lang="zh-Hant">MicroLED Test Chip：RTL 設計與實作</span></h3>
+        <p class="en">A 256-bit multi-mode Pattern Generator and a configuration register subsystem with control logic, integrated into the top-level hierarchy. Took the design through RTL implementation, functional verification, and logic synthesis in Cadence Genus.</p>
+        <p class="zh" lang="zh-Hant">設計 256-bit 多模式 Pattern Generator，以及含控制邏輯的組態暫存器子系統，並整合進 top-level 架構。完成 RTL 實作與功能驗證，再用 Cadence Genus 做邏輯合成。</p>
         <ul class="chips">
           <li>Verilog</li><li>Genus</li><li class="hl">125 MHz &middot; WNS +3.2 ns</li>
         </ul>
       </article>
 
       <article class="card reveal">
-        <h3>MicroLED Test Chip &mdash; Full-Chip Gate-Level Verification</h3>
-        <p>Built the gate-level simulation environment in Cadence Xcelium, fixed X propagation across engine signal paths, and set up waveform-based pass/fail criteria. Separated zero-delay GLS artifacts from real design defects, and found incomplete reset coverage and timing races at schematic level.</p>
+        <h3><span class="en">MicroLED Test Chip &mdash; Full-Chip Gate-Level Verification</span><span class="zh" lang="zh-Hant">MicroLED Test Chip：Full-Chip Gate-Level 驗證</span></h3>
+        <p class="en">Built the gate-level simulation environment in Cadence Xcelium, fixed X propagation across engine signal paths, and set up waveform-based pass/fail criteria. Separated zero-delay GLS artifacts from real design defects, and found incomplete reset coverage and timing races at schematic level.</p>
+        <p class="zh" lang="zh-Hant">用 Cadence Xcelium 建立 gate-level simulation 環境，解決 engine 訊號路徑上的 X propagation，並訂出以波形為依據的 pass/fail 判定標準。釐清哪些是 zero-delay GLS 造成的假象、哪些是真正的設計缺陷，並在 schematic 層級找出 reset 覆蓋不完整與 timing race 的問題。</p>
         <ul class="chips">
           <li>Xcelium</li><li>GLS</li><li>Mixed-signal</li>
         </ul>
       </article>
 
       <article class="card wide reveal">
-        <h3>Fast-Convergent Deep Reinforcement Learning Accelerator</h3>
-        <p>Developed the DRL algorithm and its Verilog accelerator architecture, then carried it through the full RTL-to-GDSII flow in TSMC 90nm &mdash; RTL verification, synthesis, APR, STA, and physical verification. Presented at IEEE GCCE 2023 in Nara, Japan.</p>
+        <h3><span class="en">Fast-Convergent Deep Reinforcement Learning Accelerator</span><span class="zh" lang="zh-Hant">快速收斂的深度強化學習加速器</span></h3>
+        <p class="en">Developed the DRL algorithm and its Verilog accelerator architecture, then carried it through the full RTL-to-GDSII flow in TSMC 90nm &mdash; RTL verification, synthesis, APR, STA, and physical verification. Presented at IEEE GCCE 2023 in Nara, Japan.</p>
+        <p class="zh" lang="zh-Hant">開發 DRL 演算法與對應的 Verilog 加速器架構，並在 TSMC 90nm 製程走完 RTL-to-GDSII 全流程：RTL 驗證、合成、APR、STA 與 physical verification。成果發表於 IEEE GCCE 2023（日本奈良）。</p>
         <ul class="chips">
-          <li>Master&rsquo;s research</li><li>TSMC 90nm</li><li>RTL-to-GDSII</li><li class="hl">~75% energy &darr;</li><li class="hl">~20% area &darr;</li>
+          <li><span class="en">Master&rsquo;s research</span><span class="zh" lang="zh-Hant">碩士研究</span></li><li>TSMC 90nm</li><li>RTL-to-GDSII</li><li class="hl"><span class="en">~75% energy &darr;</span><span class="zh" lang="zh-Hant">能耗降低約 75%</span></li><li class="hl"><span class="en">~20% area &darr;</span><span class="zh" lang="zh-Hant">面積減少約 20%</span></li>
         </ul>
       </article>
     </div>
@@ -457,13 +598,13 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   <section id="skills" class="row">
     <div class="row-label">
       <span class="num">03</span>
-      <h2>Skills</h2>
+      <h2><span class="en">Skills</span><span class="zh" lang="zh-Hant">技能</span></h2>
     </div>
     <dl class="skills reveal">
-      <div class="skill"><dt>ASIC front-end &amp; integration</dt><dd>RTL Design, Verilog, Digital IP Integration, Gate-Level Simulation (GLS), Functional Verification, Mixed-Signal Integration</dd></div>
-      <div class="skill"><dt>Design implementation</dt><dd>Logic Synthesis, Timing Analysis, Static Timing Analysis (STA), Timing Optimization, Tape-out Support</dd></div>
-      <div class="skill"><dt>EDA tools</dt><dd>Cadence Xcelium, Cadence Genus, Cadence Innovus, Synopsys Design Compiler, Synopsys IC Compiler, ModelSim, Linux</dd></div>
-      <div class="skill"><dt>Programming</dt><dd>Verilog, MATLAB</dd></div>
+      <div class="skill"><dt><span class="en">ASIC front-end &amp; integration</span><span class="zh" lang="zh-Hant">ASIC 前段設計與整合</span></dt><dd><span class="en">RTL Design, Verilog, Digital IP Integration, Gate-Level Simulation (GLS), Functional Verification, Mixed-Signal Integration</span><span class="zh" lang="zh-Hant">RTL 設計、Verilog、數位 IP 整合、Gate-Level Simulation (GLS)、功能驗證、Mixed-Signal 整合</span></dd></div>
+      <div class="skill"><dt><span class="en">Design implementation</span><span class="zh" lang="zh-Hant">設計實現</span></dt><dd><span class="en">Logic Synthesis, Timing Analysis, Static Timing Analysis (STA), Timing Optimization, Tape-out Support</span><span class="zh" lang="zh-Hant">邏輯合成、時序分析、靜態時序分析 (STA)、時序最佳化、Tape-out 支援</span></dd></div>
+      <div class="skill"><dt><span class="en">EDA tools</span><span class="zh" lang="zh-Hant">EDA 工具</span></dt><dd><span class="en">Cadence Xcelium, Cadence Genus, Cadence Innovus, Synopsys Design Compiler, Synopsys IC Compiler, ModelSim, Linux</span><span class="zh" lang="zh-Hant">Cadence Xcelium、Cadence Genus、Cadence Innovus、Synopsys Design Compiler、Synopsys IC Compiler、ModelSim、Linux</span></dd></div>
+      <div class="skill"><dt><span class="en">Programming</span><span class="zh" lang="zh-Hant">程式語言</span></dt><dd><span class="en">Verilog, MATLAB</span><span class="zh" lang="zh-Hant">Verilog、MATLAB</span></dd></div>
     </dl>
   </section>
 
@@ -471,42 +612,47 @@ h3{margin:0;font-weight:600;color:var(--strong)}
   <section id="education" class="row">
     <div class="row-label">
       <span class="num">04</span>
-      <h2>Education</h2>
+      <h2><span class="en">Education</span><span class="zh" lang="zh-Hant">學歷</span></h2>
     </div>
     <div class="edu reveal">
       <div>
-        <h3>Yuan Ze University</h3>
-        <div class="line" style="margin-top:4px">M.S. in Electrical Engineering</div>
-        <div class="line">B.S. in Electrical Engineering</div>
+        <h3><span class="en">Yuan Ze University</span><span class="zh" lang="zh-Hant">元智大學</span></h3>
+        <div class="line" style="margin-top:4px"><span class="en">M.S. in Electrical Engineering</span><span class="zh" lang="zh-Hant">電機工程學系 碩士</span></div>
+        <div class="line"><span class="en">B.S. in Electrical Engineering</span><span class="zh" lang="zh-Hant">電機工程學系 學士</span></div>
         <div class="toeic">TOEIC 890</div>
       </div>
       <div>
-        <h3>Training &amp; conferences</h3>
+        <h3><span class="en">Training &amp; conferences</span><span class="zh" lang="zh-Hant">訓練與研討會</span></h3>
         <ul class="plain">
-          <li>TSRI &mdash; Cell-Based IC Physical Design and Verification with IC Compiler (21 hr)</li>
-          <li>IEEE GCCE 2023 &mdash; Nara, Japan</li>
-          <li>CASA 2024 &mdash; Taoyuan, Taiwan</li>
+          <li>TSRI &mdash; Cell-Based IC Physical Design and Verification with IC Compiler <span class="en">(21 hr)</span><span class="zh" lang="zh-Hant">（21 小時）</span></li>
+          <li>IEEE GCCE 2023 &mdash; <span class="en">Nara, Japan</span><span class="zh" lang="zh-Hant">日本奈良</span></li>
+          <li>CASA 2024 &mdash; <span class="en">Taoyuan, Taiwan</span><span class="zh" lang="zh-Hant">台灣桃園</span></li>
         </ul>
       </div>
     </div>
   </section>
 
   <!-- Title block -->
-  <footer class="titleblock reveal">
+  <footer id="contact" class="titleblock reveal">
     <div>
-      <div class="tb-label">Drawn by</div>
+      <div class="tb-label"><span class="en">Drawn by</span><span class="zh" lang="zh-Hant">繪製</span></div>
       <div class="tb-value big">Simon Li (<span lang="zh-Hant">李冠毅</span>)</div>
     </div>
     <div>
-      <div class="tb-label">Title</div>
-      <div class="tb-value">Digital IC Design Engineer</div>
+      <div class="tb-label"><span class="en">Title</span><span class="zh" lang="zh-Hant">職稱</span></div>
+      <div class="tb-value"><span class="en">Digital IC Design Engineer</span><span class="zh" lang="zh-Hant">數位 IC 設計工程師</span></div>
     </div>
     <div>
-      <div class="tb-label">Contact</div>
-      <div class="tb-value"><a href="mailto:s51511830@gmail.com">s51511830@gmail.com</a></div>
+      <div class="tb-label"><span class="en">Contact</span><span class="zh" lang="zh-Hant">聯絡</span></div>
+      <div class="tb-value"><a class="js-mail" href="#contact" data-u="s51511830" data-d="gmail.com"><span class="mail-text">s51511830 [at] gmail.com</span></a></div>
+      <div class="tb-links">
+        <a href="https://www.linkedin.com/in/simon-li-014084275/" target="_blank" rel="noopener noreferrer">LinkedIn &nearr;</a>
+        <a href="assets/files/Kuan-Yi-Li-Resume.pdf" download><span class="en">Resume &darr;</span><span class="zh" lang="zh-Hant">履歷 &darr;</span></a>
+      </div>
+      <div class="print-only">linkedin.com/in/simon-li-014084275 &middot; kuanyi-li.github.io</div>
     </div>
     <div>
-      <div class="tb-label">Rev.</div>
+      <div class="tb-label"><span class="en">Rev.</span><span class="zh" lang="zh-Hant">版次</span></div>
       <div class="tb-value mono">2026.11</div>
     </div>
   </footer>
@@ -532,6 +678,42 @@ h3{margin:0;font-weight:600;color:var(--strong)}
     try { localStorage.setItem('theme', next); } catch (e) {}
     sync();
   });
+
+  /* Language toggle */
+  var langBtn = document.querySelector('.lang-toggle');
+  var titles = { en: 'Simon Li — Digital IC Design Engineer', zh: '李冠毅 Simon Li — 數位 IC 設計工程師' };
+  function applyLang(l) {
+    root.setAttribute('data-lang', l);
+    root.lang = l === 'zh' ? 'zh-Hant' : 'en';
+    document.title = titles[l];
+    langBtn.setAttribute('aria-label', l === 'zh' ? 'Switch to English' : '切換為中文');
+  }
+  applyLang(root.getAttribute('data-lang') === 'zh' ? 'zh' : 'en');
+  langBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-lang') === 'zh' ? 'en' : 'zh';
+    applyLang(next);
+    try { localStorage.setItem('lang', next); } catch (e) {}
+    spy();
+  });
+
+  /* Email is assembled here so it isn't sitting in the HTML for scrapers */
+  [].forEach.call(document.querySelectorAll('.js-mail'), function (a) {
+    var addr = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+    a.href = 'mailto:' + addr;
+    var t = a.querySelector('.mail-text');
+    if (t) t.textContent = addr;
+  });
+
+  /* Header resume button shows once the hero's own button has scrolled away */
+  var headResume = document.querySelector('.btn-resume');
+  var heroActions = document.querySelector('.actions');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      headResume.classList.toggle('show', !entries[0].isIntersecting);
+    }, { rootMargin: '-' + document.querySelector('.site-header').offsetHeight + 'px 0px 0px 0px' }).observe(heroActions);
+  } else {
+    headResume.classList.add('show');
+  }
 
   /* Fade-in on scroll */
   var items = document.querySelectorAll('.reveal');
